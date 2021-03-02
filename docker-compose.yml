@@ -18,9 +18,7 @@ services:
         - esnetwork
   db:
      image: "mcr.microsoft.com/mssql/server:2017-latest"
-     
      container_name: db
-     
      environment:
          SA_PASSWORD: "1Secure*Password1"
          ACCEPT_EULA: "Y"
@@ -34,10 +32,8 @@ services:
         ports:
             - "9200:9200"
             - "9300:9300"
-        environment:
-            
+        environment:        
             - discovery.type=single-node
-        
         container_name: elasticsearch-repository    
         
         volumes:
