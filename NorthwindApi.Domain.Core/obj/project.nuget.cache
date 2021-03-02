@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "7m7WQxm3LOeSK4HPA4yslNgsPoPh5+MkFG7OwELwfSDXBstv810Q5KikmeCZaKYmMQow9PSEXWM31fTVcoKZiA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sedat\\.nuget\\packages\\fluentvalidation\\9.4.0\\fluentvalidation.9.4.0.nupkg.sha512",
+    "C:\\Users\\sedat\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

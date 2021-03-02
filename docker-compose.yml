@@ -1,0 +1,73 @@
+version: '3.4'
+
+services:
+  northwindapi:
+    image: northwindapi
+    build:
+      context: .
+      dockerfile: NorthwindApi/Dockerfile
+    depends_on:
+      - db
+      - elasticsearch
+      - eventstore
+    restart: on-failure 
+    ports:
+      - "8000:80" 
+      - "8001:443"          
+    networks:
+        - esnetwork
+  db:
+     image: "mcr.microsoft.com/mssql/server:2017-latest"
+     
+     container_name: db
+     
+     environment:
+         SA_PASSWORD: "1Secure*Password1"
+         ACCEPT_EULA: "Y"
+     ports:
+       - 1433:1433
+     networks:
+        - esnetwork
+        
+  elasticsearch:
+        image: elasticsearch:7.10.1
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        environment:
+            
+            - discovery.type=single-node
+        
+        container_name: elasticsearch-repository    
+        
+        volumes:
+            - esdata:/usr/share/elasticsearch/data
+        networks:
+            - esnetwork
+  
+  eventstore:
+    image: eventstore/eventstore:5.0.6-xenial
+    
+    container_name: eventstore    
+    
+    ports:
+        - "2113:2113"
+        - "1113:1113"
+    networks:
+        - esnetwork
+
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+  
+volumes:
+    esdata:
+        driver: local
+networks:
+    esnetwork:
+        driver: bridge            

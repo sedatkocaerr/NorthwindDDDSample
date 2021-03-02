@@ -1,0 +1,17 @@
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Data.deps.json
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Data.runtimeconfig.json
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Data.runtimeconfig.dev.json
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Data.dll
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Data.pdb
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Domain.Core.dll
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Domain.dll
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Domain.pdb
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\bin\Debug\netcoreapp3.1\NorthwindApi.Domain.Core.pdb
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.csprojAssemblyReference.cache
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.AssemblyInfoInputs.cache
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.AssemblyInfo.cs
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.csproj.CoreCompileInputs.cache
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.csproj.CopyComplete
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.dll
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.pdb
+C:\Users\sedat\source\repos\NorthwindApi\NorthwindApi.Data\obj\Debug\netcoreapp3.1\NorthwindApi.Data.genruntimeconfig.cache

@@ -1,0 +1,311 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Application\\NorthwindApi.Application.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Application\\NorthwindApi.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Application\\NorthwindApi.Application.csproj",
+        "projectName": "NorthwindApi.Application",
+        "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Application\\NorthwindApi.Application.csproj",
+        "packagesPath": "C:\\Users\\sedat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\sedat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\NorthwindApi.Data.csproj": {
+                "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\NorthwindApi.Data.csproj"
+              },
+              "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj": {
+                "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Elasticsearch.Net": {
+              "target": "Package",
+              "version": "[7.10.1, )"
+            },
+            "NEST": {
+              "target": "Package",
+              "version": "[7.10.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\NorthwindApi.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\NorthwindApi.Data.csproj",
+        "projectName": "NorthwindApi.Data",
+        "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\NorthwindApi.Data.csproj",
+        "packagesPath": "C:\\Users\\sedat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\sedat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj": {
+                "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "EventStore.Client": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+              "target": "Package",
+              "version": "[1.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj",
+        "projectName": "NorthwindApi.Domain.Core",
+        "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj",
+        "packagesPath": "C:\\Users\\sedat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\sedat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[9.4.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj",
+        "projectName": "NorthwindApi.Domain",
+        "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\NorthwindApi.Domain.csproj",
+        "packagesPath": "C:\\Users\\sedat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\sedat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj": {
+                "projectPath": "C:\\Users\\sedat\\source\\repos\\NorthwindApi\\NorthwindApi.Domain.Core\\NorthwindApi.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[9.4.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
