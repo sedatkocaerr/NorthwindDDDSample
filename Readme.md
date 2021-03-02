@@ -24,12 +24,12 @@
 
 Event Store Example Photos
 
-![Alt Text](https://hizliresim.com/hXK4T8)
+![Alt Text](https://i.hizliresim.com/XBRJXA.png)
 
 
 
 
-![Alt Text](https://hizliresim.com/XBRJXA)
+![Alt Text](https://i.hizliresim.com/hXK4T8.png)
 
 ## Using Docker Compose
 You can run the required infrastructure components by issuing a simple command:
