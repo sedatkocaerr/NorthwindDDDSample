@@ -25,8 +25,6 @@ namespace NorthwindApi.Domain.Domain.Categories
             get { return new ReadOnlyCollection<Product>(_products); }
         }
 
-        
-
         public Category (Guid id,string name, string description = "", string picture="")
         {
             TypeDataCheck.checkId(id);

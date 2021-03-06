@@ -11,6 +11,7 @@ using NorthwindApi.Data.Mediator;
 using NorthwindApi.Data.Repository;
 using NorthwindApi.Data.Repository.EventSource;
 using NorthwindApi.Domain;
+using NorthwindApi.Domain.Commands.AccountCommands;
 using NorthwindApi.Domain.Commands.CategoriesCommands;
 using NorthwindApi.Domain.Commands.CustomersCommands;
 using NorthwindApi.Domain.Commands.EmployeesCommands;
@@ -19,6 +20,7 @@ using NorthwindApi.Domain.Commands.ProductsCommands;
 using NorthwindApi.Domain.Commands.ShipperCommands;
 using NorthwindApi.Domain.Commands.SuppliersCommands;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Domain.Employees;
@@ -99,6 +101,12 @@ namespace NorthwindApi.CrossCutting.IoC
             services.AddScoped<IRequestHandler<CategoryRemoveCommand, ValidationResult>, CategoryCommandHandler>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+
+            // Save Account
+            services.AddScoped<IAccountAppService, AccountAppService>();
+            services.AddScoped<IRequestHandler<AccountRegisterCommand, ValidationResult>, AccountCommandHandler>();
+            services.AddScoped<IRequestHandler<AccountUpdateCommand, ValidationResult>, AccountCommandHandler>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             // Save Database
             services.AddScoped<EfDataContext>();

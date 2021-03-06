@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Domain.Commands.CustomersCommands;
+using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Domain.Employees;
 using NorthwindApi.Domain.Domain.OrderDetails;
 using NorthwindApi.Domain.Domain.Orders;
 using NorthwindApi.Domain.Domain.Shippers;
+using NorthwindApi.Domain.Events.AccountEvents;
 using NorthwindApi.Domain.Events.CustomersEvents;
 using NorthwindApi.Domain.Events.EmployeesEvents;
 using NorthwindApi.Domain.Events.Orders;
@@ -28,6 +30,7 @@ namespace NorthwindApi.Application.AutoMapper
             CreateMap<OrderDetail, OrderDetailViewModel>();
             CreateMap<Category, CategoryViewModel>();
             CreateMap<Shipper, ShipperViewModel>();
+            CreateMap<Account, AccountViewModel>();
 
             // Event Mapping 
             CreateMap<CustomerAddEvent, CustomerViewModel>();
@@ -49,6 +52,9 @@ namespace NorthwindApi.Application.AutoMapper
             CreateMap<SupplierAddEvent, SupplierViewModel>();
             CreateMap<SupplierUpdateEvent, SupplierViewModel>();
             CreateMap<SupplierRemoveEvent, SupplierViewModel>();
+
+            CreateMap<AccountRegisterEvent, SupplierViewModel>();
+            CreateMap<AccountUpdateEvent, SupplierViewModel>();
         }
     }
 }

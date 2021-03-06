@@ -32,11 +32,9 @@ namespace NorthwindApi.Domain.Domain.Customers
         public Customer(Guid id, string companyName, string contactName,
             string contactTitle, string email, string address, string city, string postalCode, string country, string phone)
         {
-            TypeDataCheck.checkId(id);
             TypeDataCheck.IsNull(companyName);
             TypeDataCheck.IsNull(contactName);
             TypeDataCheck.IsNull(contactTitle);
-            TypeDataCheck.IsNull(email);
             TypeDataCheck.IsNull(address);
             TypeDataCheck.IsNull(city);
             TypeDataCheck.IsNull(postalCode);

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NorthwindApi.Application.ViewModels;
+using NorthwindApi.Domain.Commands.AccountCommands;
 using NorthwindApi.Domain.Commands.CategoriesCommands;
 using NorthwindApi.Domain.Commands.CustomersCommands;
 using NorthwindApi.Domain.Commands.EmployeesCommands;
@@ -85,6 +86,13 @@ namespace NorthwindApi.Application.AutoMapper
             CreateMap<SupplierViewModel, SupplierUpdateCommand>()
              .ConstructUsing(c => new SupplierUpdateCommand(c.Id,c.CompanyName, c.ContactName, c.ContactTitle, c.Adress,
               c.City, c.Country, c.Phone));
+
+            // Account Mapping
+            CreateMap<AccountViewModel, AccountRegisterCommand>()
+              .ConstructUsing(c => new AccountRegisterCommand(c.Name, c.SurName, c.Email));
+
+            CreateMap<AccountViewModel, AccountUpdateCommand>()
+             .ConstructUsing(c => new AccountUpdateCommand(c.Id, c.Name, c.SurName, c.Email));
 
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using NorthwindApi.Data.MappingsEntity;
 using NorthwindApi.Domain.Core.Repository;
+using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Domain.Employees;
@@ -44,6 +45,7 @@ namespace NorthwindApi.Data.Ef
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ShipperMap());
             modelBuilder.ApplyConfiguration(new SupplierMap());
+            modelBuilder.ApplyConfiguration(new AccountMap());
             base.OnModelCreating(modelBuilder);
         }
 
@@ -55,6 +57,7 @@ namespace NorthwindApi.Data.Ef
         public DbSet<Product> Products { get; set; }
         public DbSet<Shipper> Shippers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Account> Account { get; set; }
 
         public async Task<bool> Commit()
         {
