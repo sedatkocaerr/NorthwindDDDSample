@@ -5,6 +5,8 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NorthwindApi.Application.AppServices;
+using NorthwindApi.Application.Authentication.Abstract;
+using NorthwindApi.Application.Authentication.Concrete;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Data.Ef;
 using NorthwindApi.Data.Mediator;
@@ -107,6 +109,10 @@ namespace NorthwindApi.CrossCutting.IoC
             services.AddScoped<IRequestHandler<AccountRegisterCommand, ValidationResult>, AccountCommandHandler>();
             services.AddScoped<IRequestHandler<AccountUpdateCommand, ValidationResult>, AccountCommandHandler>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+
+
+            //  Token Service
+            services.AddScoped<IUserTokenAppService, UserTokenService>();
 
             // Save Database
             services.AddScoped<EfDataContext>();

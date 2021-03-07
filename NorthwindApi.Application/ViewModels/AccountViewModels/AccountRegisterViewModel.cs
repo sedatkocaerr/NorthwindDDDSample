@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NorthwindApi.Application.ViewModels
 {
-    public class AccountViewModel
+    public class AccountRegisterViewModel
     {
 
         [Key]
@@ -26,5 +26,10 @@ namespace NorthwindApi.Application.ViewModels
         [StringLength(maximumLength: 100, MinimumLength = 2, ErrorMessage = "Length must be between 2 to 100")]
         [DisplayName("Email")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is Required.")]
+        [StringLength(maximumLength: 100, MinimumLength = 2, ErrorMessage = "Length must be between 2 to 100")]
+        [DisplayName("Password")]
+        public string Password { get; set; }
     }
 }

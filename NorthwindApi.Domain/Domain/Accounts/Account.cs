@@ -11,14 +11,20 @@ namespace NorthwindApi.Domain.Domain.Accounts
         public string Name { get; private set; }
         public string Surname { get; private set; }
         public string Email { get; private set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+
         public DateTime RegisterDate { get; private set; }
 
-        public Account(Guid id,string name, string surname, string email, DateTime registerDate)
+        public Account(Guid id,string name, string surname, string email, byte[] PasswordHash,
+            byte[] PasswordSalt, DateTime registerDate)
         {
             SetId(id);
             SetName(name);
             SetSurname(surname);
             SetEmail(email);
+            SetpasswordHash(PasswordHash);
+            SetPasswordSalt(PasswordSalt);
         }
 
         public void SetId(Guid id)
@@ -29,13 +35,13 @@ namespace NorthwindApi.Domain.Domain.Accounts
 
         public void SetName(string name)
         {
-            TypeDataCheck.IsNullOrEmpty(Name);
+            TypeDataCheck.IsNullOrEmpty(name);
             Name = name;
         }
 
         public void SetSurname(string surname)
         {
-            TypeDataCheck.IsNullOrEmpty(Name);
+            TypeDataCheck.IsNullOrEmpty(surname);
             Surname = surname;
         }
         public void SetEmail(string email)
@@ -52,10 +58,20 @@ namespace NorthwindApi.Domain.Domain.Accounts
             }
             RegisterDate = registerDate;
         }
+        public void SetpasswordHash(byte[] passwordHash)
+        {
+            AccountRuleCheck.CheckPasswordHash(passwordHash);
+            PasswordHash = passwordHash;
+        }
+        public void SetPasswordSalt(byte[] passwordSalt)
+        {
+            AccountRuleCheck.CheckPasswordSalt(passwordSalt);
+            PasswordSalt = passwordSalt;
+        }
 
         protected override void When(object @event)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

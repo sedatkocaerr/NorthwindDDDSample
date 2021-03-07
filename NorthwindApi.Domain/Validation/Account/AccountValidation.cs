@@ -31,5 +31,10 @@ namespace NorthwindApi.Domain.Validation.Account
             .MaximumLength(100).WithMessage("{PropertyName} Max lenght 100");
         }
 
+        protected void ValidatePassword()
+        {
+            RuleFor(x => x.Password).NotEmpty().WithMessage("{PropertyName} Not Be Empty")
+            .MaximumLength(100).WithMessage("{PropertyName} Max lenght 100");
+        }
     }
 }

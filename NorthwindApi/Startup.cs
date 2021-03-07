@@ -53,13 +53,15 @@ namespace NorthwindApi
             // Services , Repository , etc dependency
             services.AddDependencyInjectionConfiguration();
 
+            // Install Jwt Authentication
+            services.InstallJwtAuthentication(Configuration);
+
             // Add Hosted Service Dependency
             services.AddHostedService<CustomerWorkerService>();
             services.AddHostedService<EmployeeWorkerService>();
             services.AddHostedService<OrderWorkerService>();
             services.AddHostedService<ProductWorkerService>();
             services.AddHostedService<SupplierWorkerService>();
-
             services.AddSwaggerGen();
         }
 
@@ -83,6 +85,8 @@ namespace NorthwindApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

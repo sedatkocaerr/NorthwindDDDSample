@@ -12,6 +12,7 @@ namespace NorthwindApi.Domain.Validation.Account
             ValidateName();
             ValidateSurname();
             ValidateEmail();
+            ValidatePassword();
         }
     }
 }

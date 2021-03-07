@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApi.Application.Authentication.Abstract;
+using NorthwindApi.Application.Authentication.Concrete;
+using NorthwindApi.Application.Authentication.Request;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
+using NorthwindApi.Application.ViewModels.AccountViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +18,32 @@ namespace NorthwindApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountAppService _accountAppService;
+        private readonly IUserTokenAppService _userTokenService;
 
-        public AccountController(IAccountAppService accountAppService)
+        public AccountController(IAccountAppService accountAppService, IUserTokenAppService userTokenService)
         {
             _accountAppService = accountAppService;
+            _userTokenService = userTokenService;
         }
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] AccountViewModel accountViewModel)
+        public async Task<IActionResult> Register([FromBody] AccountRegisterViewModel accountViewModel)
         {
             var data = await _accountAppService.AddAccount(accountViewModel);
             return Ok(data);
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] AuthenticateRequest authenticateRequest)
+        {
+           var checkAccount =  await _accountAppService.CheckAccount(authenticateRequest);
+            if (!checkAccount.status)
+                return BadRequest(checkAccount);
+
+           var tokenData = await _userTokenService.GenerateToken(authenticateRequest);
+           return Ok(tokenData);
         }
 
         [HttpGet]
@@ -38,9 +56,9 @@ namespace NorthwindApi.Controllers
 
         [HttpPost]
         [Route("Update")]
-        public async Task<IActionResult> Update([FromBody] AccountViewModel accountViewModel)
+        public async Task<IActionResult> Update([FromBody] AccountViewModel accountUpdateViewModel)
         {
-            var data = await _accountAppService.UpdateAccount(accountViewModel);
+            var data = await _accountAppService.UpdateAccount(accountUpdateViewModel);
             return Ok(data);
         }
     }

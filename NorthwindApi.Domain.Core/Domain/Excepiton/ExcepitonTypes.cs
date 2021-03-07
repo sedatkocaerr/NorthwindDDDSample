@@ -17,6 +17,8 @@ namespace NorthwindApi.Domain.Core.Domain.Excepiton
         InvalidQuantity=8,
         InvalidUnitPrice=9,
         OrderDetailAlreadyExist=10,
-        InvalidaEmail = 11
+        InvalidaEmail = 11,
+        InvalidPasswordHash = 12,
+        InvalidPasswordSalt = 13
     }
 }

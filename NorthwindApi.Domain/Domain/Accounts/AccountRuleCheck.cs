@@ -1,4 +1,4 @@
-﻿using NorthwindApi.Domain.Domain.Customers.Exception;
+﻿using NorthwindApi.Domain.Domain.Accounts.Exception;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +14,22 @@ namespace NorthwindApi.Domain.Domain.Accounts
             if (!data)
             {
                 throw new InvalidEmailException();
+            }
+        }
+
+        public static void CheckPasswordHash(byte[] passwordHash)
+        {
+            if (passwordHash == null && passwordHash.Length == 0)
+            {
+                throw new InvalidPasswordHashException();
+            }
+        }
+
+        public static void CheckPasswordSalt(byte[] passwordSalt)
+        {
+            if (passwordSalt == null && passwordSalt.Length == 0)
+            {
+                throw new InvalidPasswordSaltException();
             }
         }
     }

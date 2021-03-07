@@ -9,6 +9,10 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using System.Text;
 using System.Threading.Tasks;
+using NorthwindApi.Application.ViewModels.AccountViewModels;
+using NorthwindApi.Domain.Core.Security;
+using NorthwindApi.Application.Authentication.Request;
+using NorthwindApi.Application.Authentication.Response;
 
 namespace NorthwindApi.Application.AppServices
 {
@@ -27,10 +31,25 @@ namespace NorthwindApi.Application.AppServices
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddAccount(AccountViewModel accountViewModel)
+        public async Task<ValidationResult> AddAccount(AccountRegisterViewModel accountViewModel)
         {
             var account = _mapper.Map<AccountRegisterCommand>(accountViewModel);
             return await _mediatorHandler.SendCommand<AccountRegisterCommand>(account);
+        }
+
+        public async Task<BaseResponse<bool>> CheckAccount(AuthenticateRequest accountRegisterViewModel)
+        {
+            var account = await _accountRepository.FindOne(x => x.Email == accountRegisterViewModel.Email);
+            if (account != null)
+            {
+                if (HashingHelper.VerifyPasswordHash(accountRegisterViewModel.Password,
+                    account.PasswordHash, account.PasswordSalt))
+                {
+                    return new BaseResponse<bool>(true,true);
+                }
+                return new BaseResponse<bool>(false, false,"E-Mail Or Password wrong.");
+            }
+            return new BaseResponse<bool>(false, false, "E-Mail Or Password wrong.");
         }
 
         public async Task<AccountViewModel> GetById(Guid id)
@@ -39,9 +58,9 @@ namespace NorthwindApi.Application.AppServices
             return _mapper.Map<AccountViewModel>(account);
         }
 
-        public async Task<ValidationResult> UpdateAccount(AccountViewModel accountViewModel)
+        public async Task<ValidationResult> UpdateAccount(AccountViewModel accountUpdateViewModel)
         {
-            var account = _mapper.Map<AccountUpdateCommand>(accountViewModel);
+            var account = _mapper.Map<AccountUpdateCommand>(accountUpdateViewModel);
             return await _mediatorHandler.SendCommand<AccountUpdateCommand>(account);
         }
     }

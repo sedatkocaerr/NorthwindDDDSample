@@ -40,7 +40,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<bool> EmailExists(string EmailAdress)
         {
-            if (await DbSet.Where(x => x.Email == EmailAdress).FirstAsync()!=null)
+            if (await DbSet.Where(x => x.Email == EmailAdress).FirstOrDefaultAsync()!=null)
                 return true;
             return false;
         }

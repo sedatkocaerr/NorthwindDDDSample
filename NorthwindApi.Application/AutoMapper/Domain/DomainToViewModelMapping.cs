@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NorthwindApi.Application.ViewModels;
+using NorthwindApi.Application.ViewModels.AccountViewModels;
 using NorthwindApi.Domain.Commands.CustomersCommands;
 using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
@@ -30,6 +31,7 @@ namespace NorthwindApi.Application.AutoMapper
             CreateMap<OrderDetail, OrderDetailViewModel>();
             CreateMap<Category, CategoryViewModel>();
             CreateMap<Shipper, ShipperViewModel>();
+            CreateMap<Account, AccountRegisterViewModel>();
             CreateMap<Account, AccountViewModel>();
 
             // Event Mapping 

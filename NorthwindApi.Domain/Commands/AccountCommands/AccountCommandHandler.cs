@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Security;
 using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Events.AccountEvents;
 using System;
@@ -26,15 +27,19 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
 
         public async Task<ValidationResult> Handle(AccountRegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.ValidationResult;
 
             if (await _accountRepository.EmailExists(request.Email))
             {
                 request.ValidationResult.Errors.Add(new ValidationFailure("", "E-mail already exists."));
                 return request.ValidationResult;
             }
-           
-            var account = new Account(Guid.NewGuid(), request.Name, request.SurName, request.Email, DateTime.Now);
+
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+
+            var account = new Account(Guid.NewGuid(), request.Name, request.SurName, request.Email,
+                passwordHash,passwordSalt, DateTime.Now);
             
             account.Apply(new AccountRegisterEvent(account.Id,account.Name,account.Surname,account.Email));
             
@@ -46,7 +51,7 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
 
         public async Task<ValidationResult> Handle(AccountUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.ValidationResult;
 
             var checkAccount = await _accountRepository.FindById(request.Id);
             if (checkAccount==null)
@@ -65,7 +70,8 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
                 }
             }
             
-            var account = new Account(Guid.NewGuid(), request.Name, request.SurName, request.Email, DateTime.Now);
+            var account = new Account(Guid.NewGuid(), request.Name, request.SurName, request.Email,
+                checkAccount.PasswordHash, checkAccount.PasswordSalt, DateTime.Now);
             
             account.Apply(new AccountUpdateEvent(account.Id, account.Name, account.Surname, account.Email));
             
