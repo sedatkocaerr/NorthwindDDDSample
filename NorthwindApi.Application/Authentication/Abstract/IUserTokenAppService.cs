@@ -11,6 +11,6 @@ namespace NorthwindApi.Application.Authentication.Abstract
     public interface IUserTokenAppService
     {
         Task<BaseResponse<AuthenticateResponse>> GenerateToken(AuthenticateRequest authenticateRequest);
-        Account GetAccountById(int id);
+        Task<Account> GetAccountById(Guid Id);
     }
 }

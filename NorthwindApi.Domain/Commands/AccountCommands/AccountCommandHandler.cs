@@ -70,7 +70,7 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
                 }
             }
             
-            var account = new Account(Guid.NewGuid(), request.Name, request.SurName, request.Email,
+            var account = new Account(request.Id, request.Name, request.SurName, request.Email,
                 checkAccount.PasswordHash, checkAccount.PasswordSalt, DateTime.Now);
             
             account.Apply(new AccountUpdateEvent(account.Id, account.Name, account.Surname, account.Email));

@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using NorthwindApi.Configuration;
 using NorthwindApi.CrossCutting.IoC;
 using NorthwindApi.Domain.Domain.Customers;
+using NorthwindApi.Middleware;
 using NorthwindApi.NorthwindApi;
 using NorthwindApi.WorkerServices;
 using System;
@@ -78,9 +79,11 @@ namespace NorthwindApi
                     c.RoutePrefix = string.Empty;
                 });
             }
-            
             // closed for Docker
             //app.UseHttpsRedirection();
+
+            // Jwt Middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseRouting();
 

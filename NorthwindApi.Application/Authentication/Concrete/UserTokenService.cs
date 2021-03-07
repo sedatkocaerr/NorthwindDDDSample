@@ -39,9 +39,9 @@ namespace NorthwindApi.Application.Authentication.Concrete
             return new BaseResponse<AuthenticateResponse>(authResponse, true);
         }
 
-        public Account GetAccountById(int id)
+        public async Task<Account> GetAccountById(Guid Id)
         {
-            throw new NotImplementedException();
+           return await _accountRepository.FindById(Id);
         }
 
         private string generateJwtToken(Account account)

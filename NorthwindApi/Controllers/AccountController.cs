@@ -48,13 +48,14 @@ namespace NorthwindApi.Controllers
 
         [HttpGet]
         [Route("Get")]
+        [Helper.Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
             var data = await _accountAppService.GetById(id);
             return Ok(data);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("Update")]
         public async Task<IActionResult> Update([FromBody] AccountViewModel accountUpdateViewModel)
         {

@@ -40,19 +40,19 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<bool> EmailExists(string EmailAdress)
         {
-            if (await DbSet.Where(x => x.Email == EmailAdress).FirstOrDefaultAsync()!=null)
+            if (await DbSet.AsNoTracking().Where(x => x.Email == EmailAdress).FirstOrDefaultAsync()!=null)
                 return true;
             return false;
         }
 
         public async Task<IEnumerable<Account>> Find(Expression<Func<Account, bool>> SpecExpression)
         {
-           return await DbSet.Where(SpecExpression).ToListAsync();
+           return await DbSet.AsNoTracking().Where(SpecExpression).ToListAsync();
         }
 
         public async Task<Account> FindById(Guid id)
         {
-            return await DbSet.FindAsync(id);
+            return await DbSet.AsNoTracking().FirstOrDefaultAsync(x=>x.Id== id);
         }
 
         public async Task<Account> FindOne(Expression<Func<Account, bool>> SpecExpression)

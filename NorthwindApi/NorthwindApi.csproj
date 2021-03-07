@@ -27,9 +27,5 @@
     <ProjectReference Include="..\NorthwindApi.CrossCutting.IoC\NorthwindApi.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
 
 </Project>
