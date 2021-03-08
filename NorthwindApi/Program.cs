@@ -19,29 +19,29 @@ namespace NorthwindApi
         {
             
 
-            var host = CreateHostBuilder(args).Build();
+            CreateHostBuilder(args).Build().Run();
 
-            using var scope = host.Services.CreateScope();
-            var services = scope.ServiceProvider;
+            //using var scope = host.Services.CreateScope();
+            //var services = scope.ServiceProvider;
 
-            try
-            {
-                var dbContext = services.GetRequiredService<EfDataContext>();
-                if (dbContext.Database.IsSqlServer())
-                {
-                    dbContext.Database.Migrate();
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            //try
+            //{
+            //    var dbContext = services.GetRequiredService<EfDataContext>();
+            //    if (dbContext.Database.IsSqlServer())
+            //    {
+            //        dbContext.Database.Migrate();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-                logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+            //    logger.LogError(ex, "An error occurred while migrating or seeding the database.");
 
-                throw;
-            }
+            //    throw;
+            //}
 
-             host.Run();
+             //host.Run();
 
         }
 

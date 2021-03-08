@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthwindApi.Domain.Core", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NorthwindApi.CrossCutting.IoC", "NorthwindApi.CrossCutting.IoC\NorthwindApi.CrossCutting.IoC.csproj", "{26BCF040-80AF-4BB6-B5A1-C34A9695F411}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindApi.IntegrationTests", "NorthwindApi.IntegrationTests\NorthwindApi.IntegrationTests.csproj", "{C93393DB-CA93-4353-A440-EF00ACE2FE12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{26BCF040-80AF-4BB6-B5A1-C34A9695F411}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26BCF040-80AF-4BB6-B5A1-C34A9695F411}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26BCF040-80AF-4BB6-B5A1-C34A9695F411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C93393DB-CA93-4353-A440-EF00ACE2FE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93393DB-CA93-4353-A440-EF00ACE2FE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93393DB-CA93-4353-A440-EF00ACE2FE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93393DB-CA93-4353-A440-EF00ACE2FE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

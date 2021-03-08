@@ -43,7 +43,7 @@ namespace NorthwindApi.Controllers
                 return BadRequest(checkAccount);
 
            var tokenData = await _userTokenService.GenerateToken(authenticateRequest);
-           return Ok(tokenData);
+           return Ok(tokenData.data);
         }
 
         [HttpGet]

@@ -35,8 +35,8 @@ namespace NorthwindApi.Application.Authentication.Concrete
             }
            
             var token = generateJwtToken(checkAccount);
-            var authResponse = new AuthenticateResponse(checkAccount, token);
-            return new BaseResponse<AuthenticateResponse>(authResponse, true);
+            return new BaseResponse<AuthenticateResponse>(new AuthenticateResponse(checkAccount.Id,
+                checkAccount.Name,checkAccount.Email, token), true);
         }
 
         public async Task<Account> GetAccountById(Guid Id)

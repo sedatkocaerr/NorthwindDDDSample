@@ -13,11 +13,11 @@ namespace NorthwindApi.Application.Authentication.Response
         public string Email { get; set; }
         public string Token { get; set; }
 
-        public AuthenticateResponse(Account userAuthenticate, string token)
+        public AuthenticateResponse(Guid ıd, string name, string email, string token)
         {
-            Id = userAuthenticate.Id;
-            Name = userAuthenticate.Name;
-            Email = userAuthenticate.Email;
+            Id = ıd;
+            Name = name;
+            Email = email;
             Token = token;
         }
     }
