@@ -13,6 +13,7 @@ using NorthwindApi.Application.ViewModels.AccountViewModels;
 using NorthwindApi.Domain.Core.Security;
 using NorthwindApi.Application.Authentication.Request;
 using NorthwindApi.Application.Authentication.Response;
+using NorthwindApi.Domain.Core.Command;
 
 namespace NorthwindApi.Application.AppServices
 {
@@ -31,7 +32,7 @@ namespace NorthwindApi.Application.AppServices
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddAccount(AccountRegisterViewModel accountViewModel)
+        public async Task<CommandResponse> AddAccount(AccountRegisterViewModel accountViewModel)
         {
             var account = _mapper.Map<AccountRegisterCommand>(accountViewModel);
             return await _mediatorHandler.SendCommand<AccountRegisterCommand>(account);
@@ -58,7 +59,7 @@ namespace NorthwindApi.Application.AppServices
             return _mapper.Map<AccountViewModel>(account);
         }
 
-        public async Task<ValidationResult> UpdateAccount(AccountViewModel accountUpdateViewModel)
+        public async Task<CommandResponse> UpdateAccount(AccountViewModel accountUpdateViewModel)
         {
             var account = _mapper.Map<AccountUpdateCommand>(accountUpdateViewModel);
             return await _mediatorHandler.SendCommand<AccountUpdateCommand>(account);

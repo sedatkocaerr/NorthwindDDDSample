@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Core.Security;
 using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Events.AccountEvents;
@@ -13,8 +14,8 @@ using System.Threading.Tasks;
 namespace NorthwindApi.Domain.Commands.AccountCommands
 {
     public class AccountCommandHandler : BaseCommandHandler,
-        IRequestHandler<AccountRegisterCommand, ValidationResult>,
-        IRequestHandler<AccountUpdateCommand, ValidationResult>
+        IRequestHandler<AccountRegisterCommand, CommandResponse>,
+        IRequestHandler<AccountUpdateCommand, CommandResponse>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IEventSourceRepository _eventStoreRepository;
@@ -25,14 +26,14 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<ValidationResult> Handle(AccountRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(AccountRegisterCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             if (await _accountRepository.EmailExists(request.Email))
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure("", "E-mail already exists."));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "E-mail already exists."));
+                return request.CommandResponse;
             }
 
             byte[] passwordHash, passwordSalt;
@@ -49,15 +50,15 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
             return await Commit(_accountRepository.UnitOfWork);
         }
 
-        public async Task<ValidationResult> Handle(AccountUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(AccountUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var checkAccount = await _accountRepository.FindById(request.Id);
             if (checkAccount==null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure("", "Account Id Not Found."));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Account Id Not Found."));
+                return request.CommandResponse;
             }
 
             
@@ -65,8 +66,8 @@ namespace NorthwindApi.Domain.Commands.AccountCommands
             {
                 if(await _accountRepository.EmailExists(request.Email))
                 {
-                    request.ValidationResult.Errors.Add(new ValidationFailure("", "E-mail already exists."));
-                    return request.ValidationResult;
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "E-mail already exists."));
+                    return request.CommandResponse;
                 }
             }
             

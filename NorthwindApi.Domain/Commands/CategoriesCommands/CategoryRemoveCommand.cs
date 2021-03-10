@@ -16,8 +16,8 @@ namespace NorthwindApi.Domain.Commands.CategoriesCommands
 
         public override bool IsValid()
         {
-            ValidationResult = new CategoryRemoveValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new CategoryRemoveValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

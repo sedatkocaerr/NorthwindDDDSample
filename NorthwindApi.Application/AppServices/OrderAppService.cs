@@ -5,6 +5,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.Orders;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.OrderDetails;
 using NorthwindApi.Domain.Domain.Orders;
 using NorthwindApi.Domain.Domain.Products;
@@ -34,7 +35,7 @@ namespace NorthwindApi.Application.AppServices
             _orderRepository = orderRepository;
         }
 
-        public async Task<ValidationResult> AddOrder(OrderViewModel orderViewModel)
+        public async Task<CommandResponse> AddOrder(OrderViewModel orderViewModel)
         {
            var addCommand = _mapper.Map<OrderAddCommand>(orderViewModel);
            return await _mediatorHandler.SendCommand(addCommand);
@@ -78,13 +79,13 @@ namespace NorthwindApi.Application.AppServices
             return customer;
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var removeCommand = new OrderRemoveCommand(id);
             return  await _mediatorHandler.SendCommand(removeCommand);
         }
 
-        public async Task<ValidationResult> UpdateOrder(OrderViewModel orderViewModel)
+        public async Task<CommandResponse> UpdateOrder(OrderViewModel orderViewModel)
         {
            var updateCommand =  _mapper.Map<OrderUpdateCommand>(orderViewModel);
             return await _mediatorHandler.SendCommand(updateCommand);

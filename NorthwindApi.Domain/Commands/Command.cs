@@ -1,11 +1,16 @@
 ﻿using FluentValidation.Results;
 using MediatR;
+using NorthwindApi.Domain.Core.Command;
 
 namespace NorthwindApi.Domain.Commands
 {
-    public abstract class Command: IRequest<ValidationResult>, IBaseRequest
+    public abstract class Command: IRequest<CommandResponse>, IBaseRequest
     {
-        public ValidationResult ValidationResult { get; set; }
+        public CommandResponse CommandResponse { get; set; }
+        public Command()
+        {
+            CommandResponse = new CommandResponse();
+        }
 
         public virtual bool IsValid()
         {

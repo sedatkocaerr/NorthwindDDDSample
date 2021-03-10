@@ -4,6 +4,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.CategoriesCommands;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Categories;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace NorthwindApi.Application.AppServices
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<ValidationResult> AddCategory(CategoryViewModel categoryViewModel)
+        public async Task<CommandResponse> AddCategory(CategoryViewModel categoryViewModel)
         {
            var addCommand = _mapper.Map<CategoryAddCommand>(categoryViewModel);
             return await _mediatorHandler.SendCommand<CategoryAddCommand>(addCommand);
@@ -41,13 +42,13 @@ namespace NorthwindApi.Application.AppServices
             return _mapper.Map<CategoryViewModel>(await _categoryRepository.FindById(id));
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var removeCommand = new CategoryRemoveCommand(id);
             return await _mediatorHandler.SendCommand<CategoryRemoveCommand>(removeCommand);
         }
 
-        public async Task<ValidationResult> UpdateCategory(CategoryViewModel categoryViewModel)
+        public async Task<CommandResponse> UpdateCategory(CategoryViewModel categoryViewModel)
         {
             var updateCommand = _mapper.Map<CategoryUpdateCommand>(categoryViewModel);
             return await _mediatorHandler.SendCommand<CategoryUpdateCommand>(updateCommand);

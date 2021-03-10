@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Core.Repository;
 using System;
 using System.Collections.Generic;
@@ -9,23 +10,38 @@ namespace NorthwindApi.Domain.Core
 {
     public abstract class BaseCommandHandler
     {
-        protected ValidationResult validationResult;
+        protected CommandResponse commandResponse;
        
         public BaseCommandHandler()
         {
-            validationResult = new ValidationResult();
+            commandResponse = new CommandResponse();
         }
 
-        protected async Task<ValidationResult> Commit(IUnitOfWork uow)
+        protected async Task<CommandResponse> Commit(IUnitOfWork uow)
         {
+            commandResponse.ValidationResult = new ValidationResult();
+            if (uow == null) throw new ArgumentNullException(nameof(uow));
+            if (await uow.Commit())
+            {
+                return commandResponse;
+            }
+
+            commandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "An error occurred while saving data"));
+            return commandResponse;
+        }
+
+        protected async Task<CommandResponse> Commit(IUnitOfWork uow,Guid Id)
+        {
+            commandResponse.ValidationResult = new ValidationResult();
             if (uow == null) throw new ArgumentNullException(nameof(uow));
             if(await uow.Commit())
             {
-                return validationResult;
+                commandResponse.Id = Id;
+                return commandResponse;
             }
 
-            validationResult.Errors.Add(new ValidationFailure(null, "An error occurred while saving data"));
-            return validationResult;
+            commandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "An error occurred while saving data"));
+            return commandResponse;
         }
     }
 }

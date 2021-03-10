@@ -16,8 +16,8 @@ namespace NorthwindApi.Domain.Commands.SuppliersCommands
 
         public override bool IsValid()
         {
-            ValidationResult = new SupplierRemoveValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new SupplierRemoveValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

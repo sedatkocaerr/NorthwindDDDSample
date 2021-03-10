@@ -5,6 +5,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.ProductsCommands;
+using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace NorthwindApi.Application.AppServices
             _mapper = mapper;
         }
 
-        public async Task<ValidationResult> AddProduct(ProductViewModel productViewModel)
+        public async Task<CommandResponse> AddProduct(ProductViewModel productViewModel)
         {
             var addProductCommand = _mapper.Map<ProductAddCommand>(productViewModel);
             return await _mediatorHandler.SendCommand<ProductAddCommand>(addProductCommand);
@@ -45,13 +46,13 @@ namespace NorthwindApi.Application.AppServices
            return  await _elasticSearchService.GetId<ProductViewModel>("productevent", id);
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var removecommand = new ProductRemoveCommand(id);
            return await _mediatorHandler.SendCommand<ProductRemoveCommand>(removecommand);
         }
 
-        public async Task<ValidationResult> UpdateProduct(ProductViewModel productViewModel)
+        public async Task<CommandResponse> UpdateProduct(ProductViewModel productViewModel)
         {
             var updatecommand = _mapper.Map<ProductUpdateCommand>(productViewModel);
             return await _mediatorHandler.SendCommand<ProductUpdateCommand>(updatecommand);

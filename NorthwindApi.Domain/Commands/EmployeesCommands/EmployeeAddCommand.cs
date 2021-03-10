@@ -22,8 +22,8 @@ namespace NorthwindApi.Domain.Commands.EmployeesCommands
 
         public override bool IsValid()
         {
-            ValidationResult = new EmployeeAddValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new EmployeeAddValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

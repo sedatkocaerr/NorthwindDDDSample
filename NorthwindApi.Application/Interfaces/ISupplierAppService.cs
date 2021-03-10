@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using NorthwindApi.Application.ViewModels;
+using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,8 +13,8 @@ namespace NorthwindApi.Application.Interfaces
         Task<IEnumerable<SupplierViewModel>> GetAll();
         Task<SupplierViewModel> GetById(Guid id);
 
-        Task<ValidationResult> AddSupplier(SupplierViewModel supplierViewModel);
-        Task<ValidationResult> UpdateSupplier(SupplierViewModel supplierViewModel);
-        Task<ValidationResult> Remove(Guid id);
+        Task<CommandResponse> AddSupplier(SupplierViewModel supplierViewModel);
+        Task<CommandResponse> UpdateSupplier(SupplierViewModel supplierViewModel);
+        Task<CommandResponse> Remove(Guid id);
     }
 }

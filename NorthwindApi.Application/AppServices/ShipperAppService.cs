@@ -4,6 +4,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.ShipperCommands;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Shippers;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace NorthwindApi.Application.AppServices
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddShipper(ShipperViewModel shipperViewModel)
+        public async Task<CommandResponse> AddShipper(ShipperViewModel shipperViewModel)
         {
             var shipperAddCommand = _mapper.Map<ShipperAddCommand>(shipperViewModel);
             return await _mediatorHandler.SendCommand<ShipperAddCommand>(shipperAddCommand);
@@ -42,13 +43,13 @@ namespace NorthwindApi.Application.AppServices
             return _mapper.Map<ShipperViewModel>(shipper);
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var shipperRemoveCommand = new ShipperRemoveCommand(id);
             return await _mediatorHandler.SendCommand<ShipperRemoveCommand>(shipperRemoveCommand);
         }
 
-        public async Task<ValidationResult> UpdateShipper(ShipperViewModel shipperViewModel)
+        public async Task<CommandResponse> UpdateShipper(ShipperViewModel shipperViewModel)
         {
             var shipperUpdateCommand = _mapper.Map<ShipperUpdateCommand>(shipperViewModel);
             return await _mediatorHandler.SendCommand<ShipperUpdateCommand>(shipperUpdateCommand);

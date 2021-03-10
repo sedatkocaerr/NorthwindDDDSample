@@ -14,8 +14,8 @@ namespace NorthwindApi.Domain.Commands.Orders
 
         public override bool IsValid()
         {
-            ValidationResult = new OrderRemoveValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new OrderRemoveValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

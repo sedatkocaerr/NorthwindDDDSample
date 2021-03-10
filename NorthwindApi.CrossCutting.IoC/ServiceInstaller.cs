@@ -22,6 +22,7 @@ using NorthwindApi.Domain.Commands.ProductsCommands;
 using NorthwindApi.Domain.Commands.ShipperCommands;
 using NorthwindApi.Domain.Commands.SuppliersCommands;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Customers;
@@ -44,70 +45,70 @@ namespace NorthwindApi.CrossCutting.IoC
 
             // Customer Commands, Application service,and repository
             services.AddScoped<ICustomerAppService, CustomerAppService>();
-            services.AddScoped<IRequestHandler<CustomerAddCommand, ValidationResult>, CustomerCommandHandler>();
-            services.AddScoped<IRequestHandler<CustomerUpdateCommand, ValidationResult>, CustomerCommandHandler>();
-            services.AddScoped<IRequestHandler<CustomerRemoveCommand, ValidationResult>, CustomerCommandHandler>();
+            services.AddScoped<IRequestHandler<CustomerAddCommand, CommandResponse>, CustomerCommandHandler>();
+            services.AddScoped<IRequestHandler<CustomerUpdateCommand, CommandResponse>, CustomerCommandHandler>();
+            services.AddScoped<IRequestHandler<CustomerRemoveCommand, CommandResponse>, CustomerCommandHandler>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
 
             // Employee Commands, Application service,and repository
             services.AddScoped<IEmployeeAppService, EmployeeAppService>();
-            services.AddScoped<IRequestHandler<EmployeeAddCommand, ValidationResult>, EmployeesCommandHandler>();
-            services.AddScoped<IRequestHandler<EmployeeUpdateCommand, ValidationResult>, EmployeesCommandHandler>();
-            services.AddScoped<IRequestHandler<EmployeeRemoveCommand, ValidationResult>, EmployeesCommandHandler>();
+            services.AddScoped<IRequestHandler<EmployeeAddCommand, CommandResponse>, EmployeesCommandHandler>();
+            services.AddScoped<IRequestHandler<EmployeeUpdateCommand, CommandResponse>, EmployeesCommandHandler>();
+            services.AddScoped<IRequestHandler<EmployeeRemoveCommand, CommandResponse>, EmployeesCommandHandler>();
             services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 
 
             // Save order app service , order repository , order commands
             services.AddScoped<IOrderAppService, OrderAppService>();
-            services.AddScoped<IRequestHandler<OrderAddCommand, ValidationResult>, OrderCommandHandler>();
-            services.AddScoped<IRequestHandler<OrderUpdateCommand, ValidationResult>, OrderCommandHandler>();
-            services.AddScoped<IRequestHandler<OrderRemoveCommand, ValidationResult>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<OrderAddCommand, CommandResponse>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<OrderUpdateCommand, CommandResponse>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<OrderRemoveCommand, CommandResponse>, OrderCommandHandler>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 
             // Save Product app service , Product repository , Product commands
             services.AddScoped<IProductAppService, ProductAppService>();
-            services.AddScoped<IRequestHandler<ProductAddCommand, ValidationResult>, ProductCommandHandler>();
-            services.AddScoped<IRequestHandler<ProductUpdateCommand, ValidationResult>, ProductCommandHandler>();
-            services.AddScoped<IRequestHandler<ProductRemoveCommand, ValidationResult>, ProductCommandHandler>();
+            services.AddScoped<IRequestHandler<ProductAddCommand, CommandResponse>, ProductCommandHandler>();
+            services.AddScoped<IRequestHandler<ProductUpdateCommand, CommandResponse>, ProductCommandHandler>();
+            services.AddScoped<IRequestHandler<ProductRemoveCommand, CommandResponse>, ProductCommandHandler>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
 
             // Save Shipper
             services.AddScoped<IShipperAppService, ShipperAppService>();
-            services.AddScoped<IRequestHandler<ShipperAddCommand, ValidationResult>, ShipperCommandHandler>();
-            services.AddScoped<IRequestHandler<ShipperUpdateCommand, ValidationResult>, ShipperCommandHandler>();
-            services.AddScoped<IRequestHandler<ShipperRemoveCommand, ValidationResult>, ShipperCommandHandler>();
+            services.AddScoped<IRequestHandler<ShipperAddCommand, CommandResponse>, ShipperCommandHandler>();
+            services.AddScoped<IRequestHandler<ShipperUpdateCommand, CommandResponse>, ShipperCommandHandler>();
+            services.AddScoped<IRequestHandler<ShipperRemoveCommand, CommandResponse>, ShipperCommandHandler>();
             services.AddScoped<IShippersRepository, ShippersRepository>();
 
 
             // Save Category
             services.AddScoped<ICategoryAppService, CategoryAppService>();
-            services.AddScoped<IRequestHandler<CategoryAddCommand, ValidationResult>, CategoryCommandHandler>();
-            services.AddScoped<IRequestHandler<CategoryUpdateCommand, ValidationResult>, CategoryCommandHandler>();
-            services.AddScoped<IRequestHandler<CategoryRemoveCommand, ValidationResult>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryAddCommand, CommandResponse>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryUpdateCommand, CommandResponse>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryRemoveCommand, CommandResponse>, CategoryCommandHandler>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
             // Save Supplier
             services.AddScoped<ISupplierAppService, SupplierAppService>();
-            services.AddScoped<IRequestHandler<SupplierAddCommand, ValidationResult>, SupplierCommandHandler>();
-            services.AddScoped<IRequestHandler<SupplierUpdateCommand, ValidationResult>, SupplierCommandHandler>();
-            services.AddScoped<IRequestHandler<SupplierRemoveCommand, ValidationResult>, SupplierCommandHandler>();
+            services.AddScoped<IRequestHandler<SupplierAddCommand, CommandResponse>, SupplierCommandHandler>();
+            services.AddScoped<IRequestHandler<SupplierUpdateCommand, CommandResponse>, SupplierCommandHandler>();
+            services.AddScoped<IRequestHandler<SupplierRemoveCommand, CommandResponse>, SupplierCommandHandler>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
 
 
             // Save Category
             services.AddScoped<ICategoryAppService, CategoryAppService>();
-            services.AddScoped<IRequestHandler<CategoryAddCommand, ValidationResult>, CategoryCommandHandler>();
-            services.AddScoped<IRequestHandler<CategoryUpdateCommand, ValidationResult>, CategoryCommandHandler>();
-            services.AddScoped<IRequestHandler<CategoryRemoveCommand, ValidationResult>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryAddCommand, CommandResponse>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryUpdateCommand, CommandResponse>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CategoryRemoveCommand, CommandResponse>, CategoryCommandHandler>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
             // Save Account
             services.AddScoped<IAccountAppService, AccountAppService>();
-            services.AddScoped<IRequestHandler<AccountRegisterCommand, ValidationResult>, AccountCommandHandler>();
-            services.AddScoped<IRequestHandler<AccountUpdateCommand, ValidationResult>, AccountCommandHandler>();
+            services.AddScoped<IRequestHandler<AccountRegisterCommand, CommandResponse>, AccountCommandHandler>();
+            services.AddScoped<IRequestHandler<AccountUpdateCommand, CommandResponse>, AccountCommandHandler>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
 

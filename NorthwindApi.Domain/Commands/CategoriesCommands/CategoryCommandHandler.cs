@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Categories;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 namespace NorthwindApi.Domain.Commands.CategoriesCommands
 {
     public class CategoryCommandHandler : BaseCommandHandler,
-        IRequestHandler<CategoryAddCommand,ValidationResult>,
-        IRequestHandler<CategoryRemoveCommand, ValidationResult>,
-        IRequestHandler<CategoryUpdateCommand, ValidationResult>
+        IRequestHandler<CategoryAddCommand, CommandResponse>,
+        IRequestHandler<CategoryRemoveCommand, CommandResponse>,
+        IRequestHandler<CategoryUpdateCommand, CommandResponse>
     {
 
         private readonly ICategoryRepository _categoryRepository;
@@ -24,20 +25,20 @@ namespace NorthwindApi.Domain.Commands.CategoriesCommands
         }
         
 
-        public async Task<ValidationResult> Handle(CategoryAddCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(CategoryAddCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var addCategory = new Category(Guid.NewGuid(), request.Name, request.Description, request.Picture);
 
             await _categoryRepository.Add(addCategory);
 
-            return await Commit(_categoryRepository.UnitOfWork);
+            return await Commit(_categoryRepository.UnitOfWork,addCategory.Id);
         }
 
-        public async Task<ValidationResult> Handle(CategoryUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(CategoryUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var updateCategory = new Category(request.Id, request.Name, request.Description, request.Picture);
 
@@ -45,8 +46,8 @@ namespace NorthwindApi.Domain.Commands.CategoriesCommands
 
             if (checkCategory==null)
             {
-                validationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
-                return validationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
+                return request.CommandResponse;
             }
 
             _categoryRepository.Update(updateCategory);
@@ -54,16 +55,16 @@ namespace NorthwindApi.Domain.Commands.CategoriesCommands
             return await Commit(_categoryRepository.UnitOfWork);
         }
 
-        public async Task<ValidationResult> Handle(CategoryRemoveCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(CategoryRemoveCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var categoryCheck = await _categoryRepository.FindById(request.Id);
 
             if (categoryCheck is null)
             {
-                validationResult.Errors.Add(new ValidationFailure("", "The category doesn't exists."));
-                return validationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "The category doesn't exists."));
+                return request.CommandResponse;
             }
 
             _categoryRepository.Remove(categoryCheck);

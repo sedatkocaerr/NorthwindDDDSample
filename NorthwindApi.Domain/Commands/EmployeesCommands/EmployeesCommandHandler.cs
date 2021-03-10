@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Employees;
 using NorthwindApi.Domain.Events.EmployeesEvents;
 using System;
@@ -12,9 +13,9 @@ using System.Threading.Tasks;
 namespace NorthwindApi.Domain.Commands.EmployeesCommands
 {
     public class EmployeesCommandHandler : BaseCommandHandler,
-        IRequestHandler<EmployeeAddCommand, ValidationResult>,
-        IRequestHandler<EmployeeUpdateCommand, ValidationResult>,
-        IRequestHandler<EmployeeRemoveCommand, ValidationResult>
+        IRequestHandler<EmployeeAddCommand, CommandResponse>,
+        IRequestHandler<EmployeeUpdateCommand, CommandResponse>,
+        IRequestHandler<EmployeeRemoveCommand, CommandResponse>
     {
         private readonly IEmployeesRepository _employeesRepository;
         private readonly IEventSourceRepository _eventStoreRepository;
@@ -25,9 +26,9 @@ namespace NorthwindApi.Domain.Commands.EmployeesCommands
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<ValidationResult> Handle(EmployeeAddCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(EmployeeAddCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var employee = new Employee(Guid.NewGuid(), request.FirstName, request.LastName, request.Title, request.BirthDate,
                 request.HireDate, request.Address, request.City, request.PostalCode, request.Country);
@@ -48,15 +49,15 @@ namespace NorthwindApi.Domain.Commands.EmployeesCommands
         
         }
 
-        public async Task<ValidationResult> Handle(EmployeeUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(EmployeeUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var checkEmployee = await _employeesRepository.ChechkEmployee(request.Id);
             if (!checkEmployee)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure(null, "This id not finded."));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "This id not finded."));
+                return request.CommandResponse;
             } 
 
             var employee = new Employee(request.Id, request.FirstName, request.LastName, request.Title, request.BirthDate,
@@ -76,16 +77,16 @@ namespace NorthwindApi.Domain.Commands.EmployeesCommands
 
             return await Commit(_employeesRepository.UnitOfWork);
         }
-        public async Task<ValidationResult> Handle(EmployeeRemoveCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(EmployeeRemoveCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var employee = await _employeesRepository.FindById(request.Id);
 
             if (employee == null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "employee not found "));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "employee not found "));
+                return request.CommandResponse;
             }
 
             // Cretae Employee Event

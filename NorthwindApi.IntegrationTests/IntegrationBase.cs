@@ -9,6 +9,8 @@ using NorthwindApi.Application.Authentication.Request;
 using System.Net.Http.Headers;
 using NorthwindApi.Application.Authentication.Response;
 using NorthwindApi.Application.ViewModels;
+using System;
+using NorthwindApi.Domain.Core.Command;
 
 namespace NorthwindApi.IntegrationTests
 {
@@ -41,12 +43,57 @@ namespace NorthwindApi.IntegrationTests
         {
             var response = await _httpTestClient.PostAsJsonAsync("/api/account/login", new AuthenticateRequest
             {
-                Email = "sedatkocaer3734@hotmail.com",
+                Email = "sedattest@hotmail.com",
                 Password = "sedatkocaer"
             });
 
             var registrationResponse = await response.Content.ReadAsAsync<AuthenticateResponse>();
             return registrationResponse.Token;
+        }
+
+        protected async Task<Guid> CreateCategory()
+        {
+            var response = await _httpTestClient.PostAsJsonAsync("/api/category/add", new CategoryViewModel
+            {
+               Name="Necklages",
+               Description= "Check out our necklaces selection."
+            });
+            var categoryResponse = await response.Content.ReadAsAsync<CommandResponse>();
+            return categoryResponse.Id;
+        }
+
+        protected async Task<Guid> CreateSupplier()
+        {
+            var response = await _httpTestClient.PostAsJsonAsync("/api/supplier/add", new SupplierViewModel
+            {
+                CompanyName= "Bulk Supply",
+                ContactName= "Sedat Kocaer",
+                ContactTitle= "Purchasing Manager",
+                Adress= "49 Gilbert St.",
+                City="Istanbul",
+                Country="TR",
+                Phone= "(171) 555-2222"
+            });
+            var supplierResponse = await response.Content.ReadAsAsync<CommandResponse>();
+            return supplierResponse.Id;
+        }
+
+        protected async Task<ProductViewModel> CreateProduct()
+        {
+            var productViewModel = new ProductViewModel
+            {
+                CategoryID = await CreateCategory(),
+                SupplierID = await CreateSupplier(),
+                ProductName = "3MM Rope Chain Necklace",
+                QuantityPerUnit = "1",
+                UnitPrice = 10,
+                UnitsInStock = 10
+            };
+            var response = await _httpTestClient.PostAsJsonAsync("/api/product/add", productViewModel);
+            var productResponse = await response.Content.ReadAsAsync<CommandResponse>();
+
+            productViewModel.Id = productResponse.Id;
+            return productViewModel;
         }
 
         private async Task SetAccount()
@@ -55,7 +102,7 @@ namespace NorthwindApi.IntegrationTests
             {
                 Name="sedat",
                 SurName="kocaer",
-                Email = "sedatkocaer3734@hotmail.com",
+                Email = "sedattest@hotmail.com",
                 Password = "sedatkocaer"
             });
         }

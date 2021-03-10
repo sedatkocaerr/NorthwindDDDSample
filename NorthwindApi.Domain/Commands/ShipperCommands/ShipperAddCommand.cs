@@ -16,8 +16,8 @@ namespace NorthwindApi.Domain.Commands.ShipperCommands
         }
         public override bool IsValid()
         {
-            ValidationResult  = new ShipperAddValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new ShipperAddValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

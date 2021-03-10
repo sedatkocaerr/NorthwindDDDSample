@@ -5,6 +5,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.EmployeesCommands;
+using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace NorthwindApi.Application.AppServices
             _mapper = mapper;
         }
 
-        public async Task<ValidationResult> AddEmployee(EmployeeViewModel employeeViewModel)
+        public async Task<CommandResponse> AddEmployee(EmployeeViewModel employeeViewModel)
         {
             var employeeCommand= _mapper.Map<EmployeeAddCommand>(employeeViewModel);
             var res = await _mediatorHandler.SendCommand<EmployeeAddCommand>(employeeCommand);
@@ -47,14 +48,14 @@ namespace NorthwindApi.Application.AppServices
             return res;
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var employeeRemoveCommand = new EmployeeRemoveCommand(id);
             var res = await _mediatorHandler.SendCommand<EmployeeRemoveCommand>(employeeRemoveCommand);
             return res;
         }
 
-        public async Task<ValidationResult> UpdateEmployee(EmployeeViewModel employeeViewModel)
+        public async Task<CommandResponse> UpdateEmployee(EmployeeViewModel employeeViewModel)
         {
             var employeeRemoveCommand = _mapper.Map<EmployeeUpdateCommand>(employeeViewModel);
             var res = await _mediatorHandler.SendCommand<EmployeeUpdateCommand>(employeeRemoveCommand);

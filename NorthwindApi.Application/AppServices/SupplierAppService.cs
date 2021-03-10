@@ -5,6 +5,7 @@ using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
 using NorthwindApi.Domain.Commands.SuppliersCommands;
+using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace NorthwindApi.Application.AppServices
             _elasticSearchService = elasticSearchService;
         }
 
-        public async Task<ValidationResult> AddSupplier(SupplierViewModel supplierViewModel)
+        public async Task<CommandResponse> AddSupplier(SupplierViewModel supplierViewModel)
         {
            var addCommand =  _mapper.Map<SupplierAddCommand>(supplierViewModel);
            return await _mediatorHandler.SendCommand<SupplierAddCommand>(addCommand);
@@ -46,13 +47,13 @@ namespace NorthwindApi.Application.AppServices
             return data;
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var removeCommand = new SupplierRemoveCommand(id);
             return await _mediatorHandler.SendCommand<SupplierRemoveCommand>(removeCommand);
         }
 
-        public async Task<ValidationResult> UpdateSupplier(SupplierViewModel supplierViewModel)
+        public async Task<CommandResponse> UpdateSupplier(SupplierViewModel supplierViewModel)
         {
             var updateCommand = _mapper.Map<SupplierUpdateCommand>(supplierViewModel);
             return await _mediatorHandler.SendCommand<SupplierUpdateCommand>(updateCommand);

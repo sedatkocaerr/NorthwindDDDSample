@@ -23,8 +23,8 @@ namespace NorthwindApi.Domain.Commands.SuppliersCommands
 
         public override bool IsValid()
         {
-            ValidationResult = new SupplierAddValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new SupplierAddValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

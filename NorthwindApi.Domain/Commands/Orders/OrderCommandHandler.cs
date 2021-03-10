@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Domain.Employees;
 using NorthwindApi.Domain.Domain.Orders;
@@ -15,9 +16,9 @@ namespace NorthwindApi.Domain.Commands.Orders
 {
     public class OrderCommandHandler : BaseCommandHandler,
         
-        IRequestHandler<OrderAddCommand, ValidationResult>,
-        IRequestHandler<OrderRemoveCommand, ValidationResult>,
-        IRequestHandler<OrderUpdateCommand, ValidationResult>
+        IRequestHandler<OrderAddCommand, CommandResponse>,
+        IRequestHandler<OrderRemoveCommand, CommandResponse>,
+        IRequestHandler<OrderUpdateCommand, CommandResponse>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IEmployeesRepository _employeeRepository;
@@ -34,9 +35,9 @@ namespace NorthwindApi.Domain.Commands.Orders
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<ValidationResult> Handle(OrderAddCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(OrderAddCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
             var checkCustomer = await _customerRepository.FindById(request.CustomerID);
 
             var checkEmployee = await _employeeRepository.FindById(request.EmployeeID);
@@ -45,13 +46,13 @@ namespace NorthwindApi.Domain.Commands.Orders
             {
                 if (checkCustomer == null)
                 {
-                    request.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Customer ID"));
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Customer ID"));
                 }
                 else
                 {
-                    request.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Employee ID"));
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Employee ID"));
                 }
-                return  request.ValidationResult;
+                return request.CommandResponse;
             }
            
             var order = new Order(Guid.NewGuid(), checkCustomer,checkEmployee,request.RequiredDate,request.ShipName,
@@ -69,17 +70,17 @@ namespace NorthwindApi.Domain.Commands.Orders
 
         }
 
-        public async Task<ValidationResult> Handle(OrderUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(OrderUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var orderData = await _orderRepository.FindById(request.Id);
             Customer checkCustomer = null;
             Employee checkEmployee = null;
             if (orderData==null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Order Id"));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Order Id"));
+                return request.CommandResponse;
             }
             else
             {
@@ -87,15 +88,15 @@ namespace NorthwindApi.Domain.Commands.Orders
                 checkCustomer = await _customerRepository.FindById(request.CustomerID);
                 if (checkCustomer == null)
                 {
-                    request.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Customer ID"));
-                    return request.ValidationResult;
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Customer ID"));
+                    return request.CommandResponse;
                 }
                
                 checkEmployee = await _employeeRepository.FindById(request.EmployeeID);
                 if (checkEmployee == null)
                 {
-                    request.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Employee ID"));
-                    return request.ValidationResult;
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(null, "Invalid Employee ID"));
+                    return request.CommandResponse;
                 }
             }
 
@@ -113,16 +114,16 @@ namespace NorthwindApi.Domain.Commands.Orders
             return await Commit(_orderRepository.UnitOfWork);
         }
 
-        public async Task<ValidationResult> Handle(OrderRemoveCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(OrderRemoveCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var order = await _orderRepository.FindById(request.Id);
 
             if (order == null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "Order not found."));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "Order not found."));
+                return request.CommandResponse;
             }
 
             // TODO Here will Add to Domain Event....

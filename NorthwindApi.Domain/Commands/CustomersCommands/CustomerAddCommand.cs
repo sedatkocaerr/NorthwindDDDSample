@@ -24,8 +24,8 @@ namespace NorthwindApi.Domain.Commands.CustomersCommands
         }
         public override bool IsValid()
         {
-            ValidationResult = new CustomerAddValidation().Validate(this);
-            return ValidationResult.IsValid;
+            CommandResponse.ValidationResult = new CustomerAddValidation().Validate(this);
+            return CommandResponse.ValidationResult.IsValid;
         }
     }
 }

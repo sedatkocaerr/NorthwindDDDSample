@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Commands;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Events;
 using System;
@@ -26,7 +27,7 @@ namespace NorthwindApi.Data.Mediator
              await _mediator.Publish(@event);
         }
 
-        public virtual async Task<ValidationResult> SendCommand<T>(T command) where T : Command
+        public virtual async Task<CommandResponse> SendCommand<T>(T command) where T : Command
         {
            return await _mediator.Send(command);
         }

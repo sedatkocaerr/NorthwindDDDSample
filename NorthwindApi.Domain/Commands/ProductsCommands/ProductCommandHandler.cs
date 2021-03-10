@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Domain.Core;
+using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Products;
 using NorthwindApi.Domain.Domain.Shippers;
@@ -15,9 +16,9 @@ using System.Threading.Tasks;
 namespace NorthwindApi.Domain.Commands.ProductsCommands
 {
     public class ProductCommandHandler : BaseCommandHandler,
-        IRequestHandler<ProductAddCommand, ValidationResult>,
-        IRequestHandler<ProductUpdateCommand, ValidationResult>,
-        IRequestHandler<ProductRemoveCommand, ValidationResult>
+        IRequestHandler<ProductAddCommand, CommandResponse>,
+        IRequestHandler<ProductUpdateCommand, CommandResponse>,
+        IRequestHandler<ProductRemoveCommand, CommandResponse>
     {
 
         private readonly IProductRepository _productRepository;
@@ -34,9 +35,9 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<ValidationResult> Handle(ProductAddCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(ProductAddCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
             Category checkCategory = null;
             Supplier checkSupplier = null;
 
@@ -51,11 +52,11 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
             {
                 if (checkCategory==null)
                 {
-                    validationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
-                    return validationResult;
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
+                    return request.CommandResponse;
                 }
-                validationResult.Errors.Add(new ValidationFailure("", "Invalid Supplier Id"));
-                return validationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Supplier Id"));
+                return request.CommandResponse;
             }
 
             var product = new Product(Guid.NewGuid(), checkCategory, checkSupplier, request.ProductName, request.QuantityPerUnit,
@@ -68,12 +69,12 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
 
             await _eventSourceRepository.SaveAsync<Product>(product);
 
-            return await Commit(_productRepository.UnitOfWork);
+            return await Commit(_productRepository.UnitOfWork,product.Id);
         }
 
-        public async Task<ValidationResult> Handle(ProductUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(ProductUpdateCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
             Category checkCategory = null;
             Supplier checkSupplier = null;
 
@@ -81,8 +82,8 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
 
             if (productCheck == null)
             {
-                validationResult.Errors.Add(new ValidationFailure("", "Invalid Product Id"));
-                return validationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Product Id"));
+                return request.CommandResponse;
             }
 
             checkCategory = await _categoryRepository.FindById(request.CategoryID);
@@ -96,11 +97,11 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
             {
                 if (checkCategory == null)
                 {
-                    validationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
-                    return validationResult;
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Category Id"));
+                    return request.CommandResponse;
                 }
-                validationResult.Errors.Add(new ValidationFailure("", "Invalid Supplier Id"));
-                return validationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("", "Invalid Supplier Id"));
+                return request.CommandResponse;
             }
 
             var product = new Product(request.Id, checkCategory, checkSupplier, request.ProductName, request.QuantityPerUnit,
@@ -115,16 +116,16 @@ namespace NorthwindApi.Domain.Commands.ProductsCommands
 
             return await Commit(_productRepository.UnitOfWork);
         }
-        public async Task<ValidationResult> Handle(ProductRemoveCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(ProductRemoveCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid()) return request.CommandResponse;
 
             var product = await _productRepository.FindById(request.Id);
 
             if (product == null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "Product not found."));
-                return request.ValidationResult;
+                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure(string.Empty, "Product not found."));
+                return request.CommandResponse;
             }
 
             // TODO Here will Add to Domain Event....

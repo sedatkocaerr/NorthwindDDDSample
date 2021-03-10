@@ -3,6 +3,7 @@ using NorthwindApi.Application.Authentication.Request;
 using NorthwindApi.Application.Authentication.Response;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Application.ViewModels.AccountViewModels;
+using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,10 +14,10 @@ namespace NorthwindApi.Application.Interfaces
     public interface IAccountAppService
     {
         Task<AccountViewModel> GetById(Guid id);
-        Task<ValidationResult> AddAccount(AccountRegisterViewModel AccountViewModel);
+        Task<CommandResponse> AddAccount(AccountRegisterViewModel AccountViewModel);
 
         Task<BaseResponse<bool>> CheckAccount(AuthenticateRequest accountRegisterViewModel);
 
-        Task<ValidationResult> UpdateAccount(AccountViewModel AccountUpdateViewModel);
+        Task<CommandResponse> UpdateAccount(AccountViewModel AccountUpdateViewModel);
     }
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.ElasticSearchServices.Settings;
 using System.Linq;
+using NorthwindApi.Domain.Core.Command;
 
 namespace NorthwindApi.Application.AppServices
 {
@@ -30,7 +31,7 @@ namespace NorthwindApi.Application.AppServices
             _mediator = mediator;
         }
 
-        public async Task<ValidationResult> AddCustomer(CustomerViewModel customerViewModel)
+        public async Task<CommandResponse> AddCustomer(CustomerViewModel customerViewModel)
         {
            var addCustomerCommand = _mapper.Map<CustomerAddCommand>(customerViewModel);
            return await _mediator.SendCommand(addCustomerCommand);
@@ -51,13 +52,13 @@ namespace NorthwindApi.Application.AppServices
             return customer;
         }
 
-        public async Task<ValidationResult> Remove(Guid id)
+        public async Task<CommandResponse> Remove(Guid id)
         {
             var removeCommand = new CustomerRemoveCommand(id);
             return await _mediator.SendCommand(removeCommand);
         }
 
-        public async Task<ValidationResult> UpdateCustomer(CustomerViewModel customerViewModel)
+        public async Task<CommandResponse> UpdateCustomer(CustomerViewModel customerViewModel)
         {
             var addCustomerCommand = _mapper.Map<CustomerUpdateCommand>(customerViewModel);
             return await _mediator.SendCommand(addCustomerCommand);
