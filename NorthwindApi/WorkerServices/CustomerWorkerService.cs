@@ -8,6 +8,7 @@ using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Domain.Events;
 using NorthwindApi.Domain.Events.CustomersEvents;
+using NorthwindApi.WorkerServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,21 +39,16 @@ namespace EventStoreHandleService
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
 
-            var lastChechkPoint = new CheckPointEventDocument().Position;
-            if (! await _elasticSearchService.CheckIndex("customerpointdata"))
+            if (!await _elasticSearchService.CheckIndex(ElasticSearchIndexDocumentNames.CustomerIndexName))
             {
-                await _elasticSearchService.CretaeIndex<CheckPointEventDocument>("customerpointdata", "customerpoint_history");
-                lastChechkPoint = Position.Start;
-                await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("customerpointdata", "customerpoint_history", new CheckPointEventDocument("customersposition", lastChechkPoint.Value));
+                await _elasticSearchService.CretaeIndex<ProductViewModel>(ElasticSearchIndexDocumentNames.CustomerIndexName,
+                    ElasticSearchIndexDocumentNames.CustomerIndexAliasName);
             }
-            else
-            {
-                var response =  await _elasticSearchService.SimpleSearchAsync<CheckPointEventDocument>("customerpointdata",
-                    new Nest.SearchDescriptor<CheckPointEventDocument>().Query(x => x.Term(p => p.Key, 1)));
-                if(response.Documents.Count>=1)
-                    lastChechkPoint = response.Documents.First().Position;
+            var lastCheckpoint = await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).addPointDocument(
+                 ElasticSearchIndexDocumentNames.CustomerDocumentPositionIndexName,
+                 ElasticSearchIndexDocumentNames.CustomerDocumentPositionAliasName,
+                 ElasticSearchIndexDocumentNames.CustomerDocumentPositionName);
 
-            }
             var settings = new CatchUpSubscriptionSettings(
                 maxLiveQueueSize: 10000,
                 readBatchSize: 500,
@@ -61,7 +57,7 @@ namespace EventStoreHandleService
                 subscriptionName: "customers");
 
             subscription = _eventStore.SubscribeToAllFrom(
-                lastCheckpoint: lastChechkPoint,
+                lastCheckpoint: lastCheckpoint,
                 settings: settings,
                 eventAppeared: async (sub, @event) =>
                 {
@@ -77,21 +73,21 @@ namespace EventStoreHandleService
                             return;
 
                         var eventSaveData = CreateViewModel(eventData);
-                        if(!await _elasticSearchService.CheckIndex("customerevent"))
-                        {
-                            await _elasticSearchService.CretaeIndex<CustomerViewModel>("customerevent", "customerevent_history");
-                        }
 
                         if (eventType == typeof(CustomerAddEvent) || eventType == typeof(CustomerUpdateEvent))
                         {
-                            await _elasticSearchService.AddOrUpdateIndex<CustomerViewModel>("customerevent", "customerevent_history", eventSaveData);
+                            await _elasticSearchService.AddOrUpdateIndex<CustomerViewModel>(ElasticSearchIndexDocumentNames.CustomerIndexName,
+                               ElasticSearchIndexDocumentNames.CustomerIndexAliasName, eventSaveData);
                         }
                         else
                         {
-                            await _elasticSearchService.Delete<CustomerViewModel>("customerevent", eventSaveData.Id);
+                            await _elasticSearchService.Delete<CustomerViewModel>(ElasticSearchIndexDocumentNames.CustomerIndexName, eventSaveData.Id);
                         }
 
-                        await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("customerpointdata", "customerpoint_history", new CheckPointEventDocument("customersposition", @event.OriginalPosition.GetValueOrDefault()) );
+                        await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).UpdatePointDocument(
+                         ElasticSearchIndexDocumentNames.CustomerDocumentPositionIndexName,
+                         ElasticSearchIndexDocumentNames.CustomerDocumentPositionAliasName,
+                         ElasticSearchIndexDocumentNames.CustomerDocumentPositionName, @event.OriginalPosition.GetValueOrDefault());
                     }
                     catch (Exception exception)
                     {

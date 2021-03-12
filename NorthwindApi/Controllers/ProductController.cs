@@ -33,7 +33,11 @@ namespace NorthwindApi.Controllers
         public async Task<IActionResult> Add([FromBody] ProductViewModel productViewModel)
         {
             var data = await _productAppService.AddProduct(productViewModel);
-            return Ok(data);
+            if (data.ValidationResult.IsValid)
+            {
+                return Ok(data);
+            }
+            return BadRequest(data.ValidationResult);
         }
 
         [HttpGet]
@@ -49,8 +53,13 @@ namespace NorthwindApi.Controllers
         public async Task<IActionResult> Update([FromBody] ProductViewModel productViewModel)
         {
             var data = await _productAppService.UpdateProduct(productViewModel);
-            return Ok(data);
+            if (data.ValidationResult.IsValid)
+            {
+                return Ok(data);
+            }
+            return BadRequest(data.ValidationResult);
         }
+
 
         [HttpDelete]
         [Route("Remove")]

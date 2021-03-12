@@ -24,20 +24,27 @@ namespace NorthwindApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
+            HostEnvironment = hostEnvironment;
         }
-
+        
         public IConfiguration Configuration { get; }
+        public IHostEnvironment HostEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson(opt=>opt.SerializerSettings.ReferenceLoopHandling=ReferenceLoopHandling.Ignore);
 
+            bool testdb = false;
+            if(HostEnvironment.IsEnvironment("test"))
+            {
+                testdb = true;
+            }
             // Db Settings
-            services.RegisterDb(Configuration);
+            services.RegisterDb(Configuration, testdb);
 
             // AutoMapper Settings
             services.AddAutoMapperDependency();
@@ -64,6 +71,9 @@ namespace NorthwindApi
             services.AddHostedService<ProductWorkerService>();
             services.AddHostedService<SupplierWorkerService>();
             services.AddSwaggerGen();
+
+            //
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

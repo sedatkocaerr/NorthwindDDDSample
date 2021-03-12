@@ -35,21 +35,17 @@ namespace NorthwindApi.WorkerServices
 
         public async override Task StartAsync(CancellationToken cancellationToken)
         {
-            var lastChechkPoint = new CheckPointEventDocument().Position;
-            if (!await _elasticSearchService.CheckIndex("productpointdata"))
+            if (!await _elasticSearchService.CheckIndex(ElasticSearchIndexDocumentNames.ProductIndexName))
             {
-                await _elasticSearchService.CretaeIndex<CheckPointEventDocument>("productpointdata", "productpoint_history");
-                lastChechkPoint = Position.Start;
-                await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("productpointdata", "productpoint_history", new CheckPointEventDocument("productposition", lastChechkPoint.Value));
+                await _elasticSearchService.CretaeIndex<ProductViewModel>(ElasticSearchIndexDocumentNames.ProductIndexName,
+                    ElasticSearchIndexDocumentNames.ProductIndexAliasName);
             }
-            else
-            {
-                var response = await _elasticSearchService.SimpleSearchAsync<CheckPointEventDocument>("productpointdata",
-                    new Nest.SearchDescriptor<CheckPointEventDocument>().Query(x => x.Term(p => p.Key, 1)));
-                if (response.Documents.Count >= 1)
-                    lastChechkPoint = response.Documents.First().Position;
 
-            }
+            var lastCheckpoint = await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).addPointDocument(
+                ElasticSearchIndexDocumentNames.ProductDocumentPositionIndexName,
+                ElasticSearchIndexDocumentNames.ProductDocumentPositionAliasName,
+                ElasticSearchIndexDocumentNames.ProductDocumentPositionName);
+
             var settings = new CatchUpSubscriptionSettings(
                 maxLiveQueueSize: 10000,
                 readBatchSize: 500,
@@ -58,13 +54,12 @@ namespace NorthwindApi.WorkerServices
                 subscriptionName: "product");
 
             subscription = _eventStore.SubscribeToAllFrom(
-                lastCheckpoint: lastChechkPoint,
+                lastCheckpoint: lastCheckpoint,
                 settings: settings,
                 eventAppeared: async (sub, @event) =>
                 {
                     if (@event.OriginalEvent.EventType.StartsWith("$"))
                         return;
-
                     try
                     {
                         var eventType = Type.GetType(Encoding.UTF8.GetString(@event.OriginalEvent.Metadata) + ",NorthwindApi.Domain");
@@ -74,22 +69,21 @@ namespace NorthwindApi.WorkerServices
                             return;
 
                         var eventSaveData = CreateViewModel(eventData);
-                        if (!await _elasticSearchService.CheckIndex("productevent"))
-                        {
-                            await _elasticSearchService.CretaeIndex<ProductViewModel>("productevent", "productevent_history");
-                        }
-
+                        
                         if (eventType == typeof(ProductAddEvent) || eventType == typeof(ProductUpdateEvent))
                         {
-                            await _elasticSearchService.AddOrUpdateIndex<ProductViewModel>("productevent", "productevent_history", eventSaveData);
+                            await _elasticSearchService.AddOrUpdateIndex<ProductViewModel>(ElasticSearchIndexDocumentNames.ProductIndexName,
+                               ElasticSearchIndexDocumentNames.ProductIndexAliasName, eventSaveData);
                         }
                         else
                         {
-                            await _elasticSearchService.Delete<OrderViewModel>("productevent", eventSaveData.Id);
+                            await _elasticSearchService.Delete<OrderViewModel>(ElasticSearchIndexDocumentNames.ProductIndexName, eventSaveData.Id);
                         }
-                      
 
-                        await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("productpointdata", "productpoint_history", new CheckPointEventDocument("productposition", @event.OriginalPosition.GetValueOrDefault()));
+                        await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).UpdatePointDocument(
+                         ElasticSearchIndexDocumentNames.ProductDocumentPositionIndexName,
+                         ElasticSearchIndexDocumentNames.ProductDocumentPositionAliasName,
+                         ElasticSearchIndexDocumentNames.ProductDocumentPositionName, @event.OriginalPosition.GetValueOrDefault());
                     }
                     catch (Exception exception)
                     {

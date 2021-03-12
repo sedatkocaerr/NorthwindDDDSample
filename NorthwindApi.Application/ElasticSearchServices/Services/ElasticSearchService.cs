@@ -94,5 +94,10 @@ namespace NorthwindApi.Application.ElasticSearhServices.Services
             if (res.ServerError != null) 
                 throw new Exception("Elastic Server Add Error " + res.ServerError.Error);
         }
+
+        public async Task RemoveIndex(string IndexName)
+        {
+            await ElasticSearchClient.Indices.DeleteAsync(IndexName);
+        }
     }
 }

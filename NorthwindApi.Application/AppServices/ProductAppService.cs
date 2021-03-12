@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.ElasticSearchServices.Settings;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
@@ -35,7 +36,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<IEnumerable<ProductViewModel>> GetAll()
         {
-           var data = await _elasticSearchService.SimpleSearchAsync<ProductViewModel>("productevent",
+           var data = await _elasticSearchService.SimpleSearchAsync<ProductViewModel>(ElasticSearchIndexDocumentNames.ProductIndexName,
                 new Nest.SearchDescriptor<ProductViewModel>().Query(x => x.MatchAll()).From(0)
                 .Size(2000));
             return data.Documents;
@@ -43,7 +44,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<ProductViewModel> GetById(Guid id)
         {
-           return  await _elasticSearchService.GetId<ProductViewModel>("productevent", id);
+           return  await _elasticSearchService.GetId<ProductViewModel>(ElasticSearchIndexDocumentNames.ProductIndexName, id);
         }
 
         public async Task<CommandResponse> Remove(Guid id)

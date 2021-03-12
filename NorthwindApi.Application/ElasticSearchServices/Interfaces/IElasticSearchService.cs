@@ -20,5 +20,6 @@ namespace NorthwindApi.Application.ElasticSearhServices.Interfaces
         Task<T> GetId<T>(string IndexName, Guid id) where T : class, new();
 
         Task Delete<T>(string IndexName, Guid Id) where T : class, new();
+        Task RemoveIndex(string IndexName);
     }
 }

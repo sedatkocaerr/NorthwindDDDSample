@@ -11,13 +11,15 @@ using NorthwindApi.Application.Authentication.Response;
 using NorthwindApi.Application.ViewModels;
 using System;
 using NorthwindApi.Domain.Core.Command;
+using NorthwindApi.Application.ElasticSearhServices.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 
 namespace NorthwindApi.IntegrationTests
 {
     public class IntegrationBase
     {
         protected readonly HttpClient _httpTestClient;
-
+        private readonly IServiceProvider _serviceProvider;
         protected IntegrationBase()
         {
             var appFactory = new WebApplicationFactory<Startup>()
@@ -28,15 +30,27 @@ namespace NorthwindApi.IntegrationTests
                         services.RemoveAll(typeof(EfDataContext));
                         services.AddDbContext<EfDataContext>(options => { options.UseInMemoryDatabase("TestDb"); });
                     });
+                    builder.UseEnvironment("test");
                 });
 
             _httpTestClient = appFactory.CreateClient();
+            _serviceProvider = appFactory.Services;
         }
 
         protected async Task AuthanticateAccountAsync()
         {
             await SetAccount();
             _httpTestClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync());
+        }
+        private async Task SetAccount()
+        {
+            var response = await _httpTestClient.PostAsJsonAsync("/api/account/Register", new AccountRegisterViewModel
+            {
+                Name = "sedat",
+                SurName = "kocaer",
+                Email = "sedattest@hotmail.com",
+                Password = "sedatkocaer"
+            });
         }
 
         private async Task<string> GetJwtAsync()
@@ -50,61 +64,9 @@ namespace NorthwindApi.IntegrationTests
             var registrationResponse = await response.Content.ReadAsAsync<AuthenticateResponse>();
             return registrationResponse.Token;
         }
-
-        protected async Task<Guid> CreateCategory()
+        public EfDataContext GetContext()
         {
-            var response = await _httpTestClient.PostAsJsonAsync("/api/category/add", new CategoryViewModel
-            {
-               Name="Necklages",
-               Description= "Check out our necklaces selection."
-            });
-            var categoryResponse = await response.Content.ReadAsAsync<CommandResponse>();
-            return categoryResponse.Id;
-        }
-
-        protected async Task<Guid> CreateSupplier()
-        {
-            var response = await _httpTestClient.PostAsJsonAsync("/api/supplier/add", new SupplierViewModel
-            {
-                CompanyName= "Bulk Supply",
-                ContactName= "Sedat Kocaer",
-                ContactTitle= "Purchasing Manager",
-                Adress= "49 Gilbert St.",
-                City="Istanbul",
-                Country="TR",
-                Phone= "(171) 555-2222"
-            });
-            var supplierResponse = await response.Content.ReadAsAsync<CommandResponse>();
-            return supplierResponse.Id;
-        }
-
-        protected async Task<ProductViewModel> CreateProduct()
-        {
-            var productViewModel = new ProductViewModel
-            {
-                CategoryID = await CreateCategory(),
-                SupplierID = await CreateSupplier(),
-                ProductName = "3MM Rope Chain Necklace",
-                QuantityPerUnit = "1",
-                UnitPrice = 10,
-                UnitsInStock = 10
-            };
-            var response = await _httpTestClient.PostAsJsonAsync("/api/product/add", productViewModel);
-            var productResponse = await response.Content.ReadAsAsync<CommandResponse>();
-
-            productViewModel.Id = productResponse.Id;
-            return productViewModel;
-        }
-
-        private async Task SetAccount()
-        {
-            var response = await _httpTestClient.PostAsJsonAsync("/api/account/Register", new AccountRegisterViewModel
-            {
-                Name="sedat",
-                SurName="kocaer",
-                Email = "sedattest@hotmail.com",
-                Password = "sedatkocaer"
-            });
+            return _serviceProvider.CreateScope().ServiceProvider.GetRequiredService<EfDataContext>();
         }
     }
 }

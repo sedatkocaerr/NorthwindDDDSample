@@ -14,7 +14,7 @@ namespace NorthwindApi.Domain.Domain.Products
         Task<IEnumerable<Product>> Find(Expression<Func<Product, bool>> SpecExpression);
         Task Add(Product entity);
         void Remove(Product entity);
-
+        Task<IEnumerable<Product>> GetAll();
         void Update(Product entity);
     }
 }

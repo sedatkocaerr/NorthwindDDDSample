@@ -8,13 +8,21 @@ namespace NorthwindApi.NorthwindApi
 {
     public static class DbInstaller
     {
-        public static void RegisterDb(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterDb(this IServiceCollection services,
+            IConfiguration configuration,bool testdb)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddDbContext<EfDataContext>(
-                options => options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(EfDataContext).Assembly.FullName)));
+            if(testdb)
+            {
+                services.AddDbContext<EfDataContext>(options => options.UseInMemoryDatabase("test"));
+            }
+            else
+            {
+                services.AddDbContext<EfDataContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly(typeof(EfDataContext).Assembly.FullName)));
+            }
+            
         }
     }
 }

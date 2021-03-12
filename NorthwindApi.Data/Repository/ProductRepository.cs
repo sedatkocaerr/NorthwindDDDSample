@@ -58,5 +58,11 @@ namespace NorthwindApi.Data.Repository
         {
             DbSet.Update(entity);
         }
+
+        public async Task<IEnumerable<Product>> GetAll()
+        {
+
+            return await DbSet.ToListAsync();
+        }
     }
 }

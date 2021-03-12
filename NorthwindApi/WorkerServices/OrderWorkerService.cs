@@ -34,21 +34,16 @@ namespace NorthwindApi.WorkerServices
 
         public async override Task StartAsync(CancellationToken cancellationToken)
         {
-            var lastChechkPoint = new CheckPointEventDocument().Position;
-            if (!await _elasticSearchService.CheckIndex("orderpointdata"))
+            if (!await _elasticSearchService.CheckIndex(ElasticSearchIndexDocumentNames.OrderIndexName))
             {
-                await _elasticSearchService.CretaeIndex<CheckPointEventDocument>("orderpointdata", "orderpoint_history");
-                lastChechkPoint = Position.Start;
-                await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("orderpointdata", "orderpoint_history", new CheckPointEventDocument("orderposition", lastChechkPoint.Value));
+                await _elasticSearchService.CretaeIndex<ProductViewModel>(ElasticSearchIndexDocumentNames.OrderIndexName,
+                    ElasticSearchIndexDocumentNames.OrderIndexAliasName);
             }
-            else
-            {
-                var response = await _elasticSearchService.SimpleSearchAsync<CheckPointEventDocument>("orderpointdata",
-                    new Nest.SearchDescriptor<CheckPointEventDocument>().Query(x => x.Term(p => p.Key, 1)));
-                if (response.Documents.Count >= 1)
-                    lastChechkPoint = response.Documents.First().Position;
+            var lastCheckpoint = await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).addPointDocument(
+                 ElasticSearchIndexDocumentNames.OrderDocumentPositionIndexName,
+                 ElasticSearchIndexDocumentNames.OrderDocumentPositionAliasName,
+                 ElasticSearchIndexDocumentNames.OrderDocumentPositionName);
 
-            }
             var settings = new CatchUpSubscriptionSettings(
                 maxLiveQueueSize: 10000,
                 readBatchSize: 500,
@@ -57,7 +52,7 @@ namespace NorthwindApi.WorkerServices
                 subscriptionName: "order");
 
             subscription = _eventStore.SubscribeToAllFrom(
-                lastCheckpoint: lastChechkPoint,
+                lastCheckpoint: lastCheckpoint,
                 settings: settings,
                 eventAppeared: async (sub, @event) =>
                 {
@@ -73,22 +68,21 @@ namespace NorthwindApi.WorkerServices
                             return;
 
                         var eventSaveData = CreateViewModel(eventData);
-                        if (!await _elasticSearchService.CheckIndex("orderevent"))
-                        {
-                            await _elasticSearchService.CretaeIndex<OrderViewModel>("orderevent", "orderevent_history");
-                        }
 
                         if (eventType == typeof(OrderAddEvent) || eventType == typeof(OrderUpdateEvent))
                         {
-                            await _elasticSearchService.AddOrUpdateIndex<OrderViewModel>("orderevent", "orderevent_history", eventSaveData);
+                            await _elasticSearchService.AddOrUpdateIndex<OrderViewModel>(ElasticSearchIndexDocumentNames.OrderIndexName,
+                               ElasticSearchIndexDocumentNames.OrderIndexAliasName, eventSaveData);
                         }
                         else
                         {
-                            await _elasticSearchService.Delete<OrderViewModel>("orderevent", eventSaveData.Id);
+                            await _elasticSearchService.Delete<OrderViewModel>(ElasticSearchIndexDocumentNames.OrderIndexName, eventSaveData.Id);
                         }
-                        
 
-                        await _elasticSearchService.AddOrUpdateIndex<CheckPointEventDocument>("orderpointdata", "orderpoint_history", new CheckPointEventDocument("orderposition", @event.OriginalPosition.GetValueOrDefault()));
+                        await new CreateAndUpdatePointDocumentIndex(_elasticSearchService).UpdatePointDocument(
+                        ElasticSearchIndexDocumentNames.OrderDocumentPositionIndexName,
+                        ElasticSearchIndexDocumentNames.OrderDocumentPositionAliasName,
+                        ElasticSearchIndexDocumentNames.OrderDocumentPositionName, @event.OriginalPosition.GetValueOrDefault());
                     }
                     catch (Exception exception)
                     {
