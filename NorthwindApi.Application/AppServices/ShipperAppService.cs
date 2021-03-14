@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.Commands.ShipperCommands;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.ShipperCommands;
 using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Shippers;
 using System;

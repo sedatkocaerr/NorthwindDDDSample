@@ -6,6 +6,7 @@ using NorthwindApi.Application.Authentication.Request;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Application.ViewModels.AccountViewModels;
+using NorthwindApi.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace NorthwindApi.Controllers
 
         [HttpGet]
         [Route("Get")]
-        [Helper.Authorize]
+        [Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
             var data = await _accountAppService.GetById(id);
@@ -57,6 +58,7 @@ namespace NorthwindApi.Controllers
 
         [HttpPut]
         [Route("Update")]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] AccountViewModel accountUpdateViewModel)
         {
             var data = await _accountAppService.UpdateAccount(accountUpdateViewModel);

@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using NorthwindApi.Domain.Commands;
+using NorthwindApi.Domain.Command;
 using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Events;
 using System;

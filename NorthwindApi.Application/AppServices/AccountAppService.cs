@@ -2,7 +2,6 @@
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.AccountCommands;
 using NorthwindApi.Domain.Domain.Accounts;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using NorthwindApi.Domain.Core.Security;
 using NorthwindApi.Application.Authentication.Request;
 using NorthwindApi.Application.Authentication.Response;
 using NorthwindApi.Domain.Core.Command;
+using NorthwindApi.Application.Commands.AccountCommands;
 
 namespace NorthwindApi.Application.AppServices
 {

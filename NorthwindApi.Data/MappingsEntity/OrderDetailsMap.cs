@@ -15,12 +15,7 @@ namespace NorthwindApi.Data.MappingsEntity
             builder.Ignore(x => x.Version);
 
             builder.Property(c => c.Id)
-               .HasColumnName("Id");
-
-            builder.HasKey(p => p.Id);
-            
-            builder.Property(p => p.Id).IsRequired().ValueGeneratedNever();
-
+               .HasColumnName("Id").ValueGeneratedNever();
 
             // RelationShip Mappings
             builder.HasOne(x => x.Order)

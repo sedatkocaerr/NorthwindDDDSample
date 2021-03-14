@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.Commands.EmployeesCommands;
+using NorthwindApi.Application.ElasticSearchServices.Settings;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.EmployeesCommands;
 using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<IEnumerable<EmployeeViewModel>> GetAll()
         {
-          var res =  await _elasticSearchService.SimpleSearchAsync("employeeevent",
+          var res =  await _elasticSearchService.SimpleSearchAsync(ElasticSearchIndexDocumentNames.EmployeeIndexName,
                 new Nest.SearchDescriptor<EmployeeViewModel>().Query(x => x.MatchAll()).From(0)
                 .Size(2000));
             return res.Documents.ToList();
@@ -44,7 +45,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<EmployeeViewModel> GetById(Guid id)
         {
-            var res = await _elasticSearchService.GetId<EmployeeViewModel>("employeeevent", id);
+            var res = await _elasticSearchService.GetId<EmployeeViewModel>(ElasticSearchIndexDocumentNames.EmployeeIndexName, id);
             return res;
         }
 

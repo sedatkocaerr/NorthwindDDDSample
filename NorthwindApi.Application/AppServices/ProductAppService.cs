@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.Commands.ProductsCommands;
 using NorthwindApi.Application.ElasticSearchServices.Settings;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.ProductsCommands;
 using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;

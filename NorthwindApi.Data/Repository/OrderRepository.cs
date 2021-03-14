@@ -57,7 +57,16 @@ namespace NorthwindApi.Data.Repository
 
         public void Update(Order entity)
         {
-            DbSet.Update(entity);
+            try
+            {
+                DbSet.Update(entity);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

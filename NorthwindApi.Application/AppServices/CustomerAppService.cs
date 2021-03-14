@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using MediatR;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
-using NorthwindApi.Domain.Commands.CustomersCommands;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Data.Mediator;
 using System;
@@ -14,6 +13,7 @@ using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.ElasticSearchServices.Settings;
 using System.Linq;
 using NorthwindApi.Domain.Core.Command;
+using NorthwindApi.Application.Commands.CustomersCommands;
 
 namespace NorthwindApi.Application.AppServices
 {
@@ -39,7 +39,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<IEnumerable<CustomerViewModel>> GetAll()
         {
-            var customerlist = await _elasticSearchService.SimpleSearchAsync("customerevent",
+            var customerlist = await _elasticSearchService.SimpleSearchAsync(ElasticSearchIndexDocumentNames.CustomerIndexName,
                 new Nest.SearchDescriptor<CustomerViewModel>().Query(x => x.MatchAll()).From(0)
                 .Size(2000));
 
@@ -48,7 +48,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<CustomerViewModel> GetById(Guid id)
         {
-           var customer = await _elasticSearchService.GetId<CustomerViewModel>("customerevent",id);
+           var customer = await _elasticSearchService.GetId<CustomerViewModel>(ElasticSearchIndexDocumentNames.CustomerIndexName, id);
             return customer;
         }
 

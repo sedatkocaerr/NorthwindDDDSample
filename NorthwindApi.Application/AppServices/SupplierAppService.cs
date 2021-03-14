@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.Commands.SuppliersCommands;
+using NorthwindApi.Application.ElasticSearchServices.Settings;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.SuppliersCommands;
 using NorthwindApi.Domain.Core.Command;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<IEnumerable<SupplierViewModel>> GetAll()
         {
-           var data = await _elasticSearchService.SimpleSearchAsync<SupplierViewModel>("supplierevent",
+           var data = await _elasticSearchService.SimpleSearchAsync<SupplierViewModel>(ElasticSearchIndexDocumentNames.SupplierIndexName,
                 new Nest.SearchDescriptor<SupplierViewModel>().Query(x => x.MatchAll()).From(0)
                 .Size(2000));
            return  data.Documents;
@@ -43,7 +44,7 @@ namespace NorthwindApi.Application.AppServices
 
         public async Task<SupplierViewModel> GetById(Guid id)
         {
-            var data = await _elasticSearchService.GetId<SupplierViewModel>("supplierevent", id);
+            var data = await _elasticSearchService.GetId<SupplierViewModel>(ElasticSearchIndexDocumentNames.SupplierIndexName, id);
             return data;
         }
 

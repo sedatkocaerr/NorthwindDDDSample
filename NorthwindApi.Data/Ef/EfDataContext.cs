@@ -21,22 +21,16 @@ namespace NorthwindApi.Data.Ef
 {
     public class EfDataContext : DbContext, IUnitOfWork
     {
-
-       
+        private IDbContextTransaction _currentTransaction;
         public EfDataContext(DbContextOptions<EfDataContext> options) : base(options)
         {
-
+           
         }
-
-        private IDbContextTransaction _currentTransaction;
-
-        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
-
-        public bool HasActiveTransaction => _currentTransaction != null;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.ApplyConfiguration(new CategoryMap());
             modelBuilder.ApplyConfiguration(new CustomerMap());
             modelBuilder.ApplyConfiguration(new EmployeeMap());
@@ -59,20 +53,70 @@ namespace NorthwindApi.Data.Ef
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Account> Account { get; set; }
 
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            if (_currentTransaction != null) return null;
+
+            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            return _currentTransaction;
+        }
+
+
         public async Task<bool> Commit()
         {
-            var success = await SaveChangesAsync() > 0;
-            if(success)
+            try
             {
-                return true;
+                var success = await SaveChangesAsync() > 0;
+                if (success)
+                {
+                    await _currentTransaction.CommitAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+                Rollback();
+                return false;
             }
 
-            return false;
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
         }
 
         public void Rollback()
         {
-            throw new NotImplementedException();
+            try
+            {
+                _currentTransaction?.Rollback();
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
+
+        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
+
+        public bool HasActiveTransaction()
+        {
+            if (_currentTransaction != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

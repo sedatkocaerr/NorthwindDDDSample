@@ -27,7 +27,7 @@ namespace NorthwindApi.Data.MappingsEntity
 
 
             builder.Property(c => c.Id)
-               .HasColumnName("Id");
+               .HasColumnName("Id").ValueGeneratedNever();
 
             builder.Property(c => c.CustomerID)
                 .IsRequired();

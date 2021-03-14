@@ -29,12 +29,12 @@ namespace NorthwindApi.Middleware
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                attachUserToContext(context, userTokenAppService, token);
+                await attachUserToContext(context, userTokenAppService, token);
 
             await _next(context);
         }
 
-        private async void attachUserToContext(HttpContext context, IUserTokenAppService userTokenAppService, string token)
+        private async Task attachUserToContext(HttpContext context, IUserTokenAppService userTokenAppService, string token)
         {
             try
             {

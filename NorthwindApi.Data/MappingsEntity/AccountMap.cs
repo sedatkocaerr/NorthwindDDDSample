@@ -30,10 +30,10 @@ namespace NorthwindApi.Data.MappingsEntity
                 .HasMaxLength(100);
 
             builder.Property(c => c.PasswordHash)
-               .HasColumnType("varbinary");
+               .HasColumnType("varbinary(max)");
 
             builder.Property(c => c.PasswordSalt)
-               .HasColumnType("varbinary");
+               .HasColumnType("varbinary(max)");
 
             builder.Property(c => c.RegisterDate)
               .HasColumnType("Date")

@@ -17,7 +17,7 @@ namespace NorthwindApi.Data.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "5.0.3");
 
             modelBuilder.Entity("NorthwindApi.Domain.Domain.Accounts.Account", b =>
                 {
@@ -222,7 +222,6 @@ namespace NorthwindApi.Data.Migrations
             modelBuilder.Entity("NorthwindApi.Domain.Domain.Orders.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 

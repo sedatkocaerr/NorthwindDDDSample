@@ -57,7 +57,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<Account> FindOne(Expression<Func<Account, bool>> SpecExpression)
         {
-            return await DbSet.Where(SpecExpression).FirstOrDefaultAsync();
+            return await DbSet.AsNoTracking().Where(SpecExpression).FirstOrDefaultAsync();
         }
 
         public void Remove(Account entity)

@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 using MediatR;
-using NorthwindApi.Domain.Commands;
+using NorthwindApi.Domain.Command;
 using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Customers;
 using NorthwindApi.Domain.Events;

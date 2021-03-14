@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
+using NorthwindApi.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace NorthwindApi.Controllers
 
         [HttpPost]
         [Route("Add")]
+        [Authorize]
         public async Task<IActionResult> Add([FromBody] ShipperViewModel ShipperViewModel)
         {
             var data = await _shipperAppService.AddShipper(ShipperViewModel);
@@ -47,6 +49,7 @@ namespace NorthwindApi.Controllers
 
         [HttpPut]
         [Route("Update")]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] ShipperViewModel ShipperViewModel)
         {
             var data = await _shipperAppService.UpdateShipper(ShipperViewModel);
@@ -55,6 +58,7 @@ namespace NorthwindApi.Controllers
 
         [HttpDelete]
         [Route("Remove")]
+        [Authorize]
         public async Task<IActionResult> Remove(Guid Id)
         {
             var data = await _shipperAppService.Remove(Id);

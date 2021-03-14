@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
+using NorthwindApi.Application.Commands.CategoriesCommands;
 using NorthwindApi.Application.Interfaces;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Data.Mediator;
-using NorthwindApi.Domain.Commands.CategoriesCommands;
 using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Domain.Domain.Categories;
 using System;

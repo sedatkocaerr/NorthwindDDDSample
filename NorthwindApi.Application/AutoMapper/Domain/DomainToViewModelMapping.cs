@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using NorthwindApi.Application.ViewModels;
 using NorthwindApi.Application.ViewModels.AccountViewModels;
-using NorthwindApi.Domain.Commands.CustomersCommands;
 using NorthwindApi.Domain.Domain.Accounts;
 using NorthwindApi.Domain.Domain.Categories;
 using NorthwindApi.Domain.Domain.Customers;
