@@ -30,7 +30,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<Employee> FindById(Guid id)
         {
-           var employee = await DbSet.FindAsync(id);
+           var employee = await DbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return employee;
         }
 

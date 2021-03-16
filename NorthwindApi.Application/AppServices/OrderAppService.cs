@@ -70,14 +70,14 @@ namespace NorthwindApi.Application.AppServices
         public async Task<ValidationResult> AddOrderDetail(OrderDetailViewModel orderDetailViewModel)
         {
             var validationResult = new ValidationResult();
-            var orderCheck = await _orderRepository.FindById(orderDetailViewModel.OrderID);
+            var orderCheck = await _orderRepository.FindOne(x=>x.Id==orderDetailViewModel.OrderID);
 
             if (orderCheck == null)
             {
                 validationResult.Errors.Add(new ValidationFailure("", "Invalidad Order Id"));
             }
 
-            var productCheck = await _productRepository.FindById(orderDetailViewModel.ProductId);
+            var productCheck = await _productRepository.FindOne(x => x.Id == orderDetailViewModel.ProductId);
 
             if (productCheck == null)
             {

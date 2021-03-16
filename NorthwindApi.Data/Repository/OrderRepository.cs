@@ -30,7 +30,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<Order> FindById(Guid id)
         {
-           return await DbSet.FindAsync(id);
+           return await DbSet.AsNoTracking().FirstOrDefaultAsync(x=>x.Id==id);
         }
 
         public async Task<Order> FindOne(Expression<Func<Order, bool>> SpecExpression)
