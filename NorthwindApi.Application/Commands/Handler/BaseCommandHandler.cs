@@ -25,7 +25,7 @@ namespace NorthwindApi.Application.Commands.Handler
             using (var transaction = await uow.BeginTransactionAsync())
             {
                 commandResponse.ValidationResult = new ValidationResult();
-                if (await uow.Commit())
+                if (await uow.Commit(transaction))
                 {
                     return commandResponse;
                 }
@@ -42,7 +42,7 @@ namespace NorthwindApi.Application.Commands.Handler
             using (var transaction = await uow.BeginTransactionAsync())
             {
                 commandResponse.ValidationResult = new ValidationResult();
-                if (await uow.Commit())
+                if (await uow.Commit(transaction))
                 {
                     commandResponse.Id = Id;
                     return commandResponse;

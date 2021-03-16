@@ -34,6 +34,8 @@ namespace NorthwindApi.IntegrationTests
         [Test]
         public async Task Must_Add_Valid_Product()
         {
+            await AuthanticateAccountAsync();
+
             var category = await CreateCategory();
             var supplier = await CreateSupplier();
 
@@ -59,6 +61,8 @@ namespace NorthwindApi.IntegrationTests
         [Test]
         public async Task Must_Not_Add_Valid_Product()
         {
+            await AuthanticateAccountAsync();
+
             var category = await CreateCategory();
             var supplier = await CreateSupplier();
 
@@ -79,6 +83,8 @@ namespace NorthwindApi.IntegrationTests
         [Test]
         public async Task Must_Update_Valid_Product()
         {
+            await AuthanticateAccountAsync();
+
             var product = await CreateProduct();
 
             //Arrange
@@ -106,6 +112,8 @@ namespace NorthwindApi.IntegrationTests
         [Test]
         public async Task Must_Not_Update_Valid_Product()
         {
+            await AuthanticateAccountAsync();
+
             var product = await CreateProduct();
 
             //Arrange

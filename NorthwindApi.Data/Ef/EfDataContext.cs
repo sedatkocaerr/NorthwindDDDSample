@@ -63,14 +63,18 @@ namespace NorthwindApi.Data.Ef
         }
 
 
-        public async Task<bool> Commit()
+        public async Task<bool> Commit(IDbContextTransaction transaction)
         {
+
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+
             try
             {
                 var success = await SaveChangesAsync() > 0;
                 if (success)
                 {
-                    await _currentTransaction.CommitAsync();
+                    await transaction.CommitAsync();
                     return true;
                 }
                 return false;
@@ -117,6 +121,25 @@ namespace NorthwindApi.Data.Ef
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> Commit()
+        {
+            try
+            {
+                var success = await SaveChangesAsync() > 0;
+                if (success)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+                Rollback();
+                return false;
+            }
         }
     }
 }

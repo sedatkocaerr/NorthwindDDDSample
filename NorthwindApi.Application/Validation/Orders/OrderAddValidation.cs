@@ -9,9 +9,7 @@ namespace NorthwindApi.Domain.Validation.Orders
             ValidateCustomerID();
             ValidateEmployeeID();
             ValidateShipVia();
-            ValidateOrderDate();
             ValidateRequiredDate();
-            ValidateShippedDate();
             ValidateShipName();
             ValidateShipAddress();
             ValidateShipCity();

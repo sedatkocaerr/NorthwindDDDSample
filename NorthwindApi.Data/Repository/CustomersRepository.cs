@@ -26,7 +26,7 @@ namespace NorthwindApi.Data.Repository
         public CustomersRepository(EfDataContext context)
         {
             _efDataContext = context ?? throw new ArgumentNullException(nameof(context));
-            DbSet = _efDataContext.Customer;
+            DbSet = _efDataContext.Set<Customer>();
         }
         public void Add(Customer entity)
         {
@@ -55,7 +55,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<Customer> GetByEmail(string email)
         {
-            return await DbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Email == email);
+            return await DbSet.FirstOrDefaultAsync(c => c.Email == email);
         }
 
         public async Task<IEnumerable<Customer>> GetAll()

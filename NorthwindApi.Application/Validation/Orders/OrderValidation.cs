@@ -26,26 +26,12 @@ namespace NorthwindApi.Domain.Validation.Orders
         {
             RuleFor(x => x.ShipVia).NotEqual(Guid.Empty);
         }
-
-        protected void ValidateOrderDate()
-        {
-            RuleFor(user => user.OrderDate)
-           .Must(p => !(p == DateTime.MinValue))
-           .WithMessage("BirthDate not null");
-        }
-
+        
         protected void ValidateRequiredDate()
         {
             RuleFor(user => user.RequiredDate)
            .Must(p => !(p == DateTime.MinValue))
-           .WithMessage("BirthDate not null");
-        }
-
-        protected void ValidateShippedDate()
-        {
-            RuleFor(user => user.ShippedDate)
-           .Must(p => !(p == DateTime.MinValue))
-           .WithMessage("BirthDate not null");
+           .WithMessage("RequiredDate not null");
         }
 
         protected void ValidateShipName()

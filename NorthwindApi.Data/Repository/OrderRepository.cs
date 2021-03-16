@@ -30,7 +30,7 @@ namespace NorthwindApi.Data.Repository
 
         public async Task<Order> FindById(Guid id)
         {
-           return await DbSet.AsNoTracking().FirstAsync(x=>x.Id==id);
+           return await DbSet.FindAsync(id);
         }
 
         public async Task<Order> FindOne(Expression<Func<Order, bool>> SpecExpression)
@@ -57,16 +57,8 @@ namespace NorthwindApi.Data.Repository
 
         public void Update(Order entity)
         {
-            try
-            {
-                DbSet.Update(entity);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-           
+            _efDataContext.Entry<Order>(entity).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+            DbSet.Update(entity);
         }
     }
 }

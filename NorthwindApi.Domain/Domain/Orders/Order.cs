@@ -116,9 +116,10 @@ namespace NorthwindApi.Domain.Domain.Orders
         }
 
         // İstenen Tarih Bugunun Tarihinden 12 saat önce olmamalıdır.
-        public void setRequiredDate(DateTime RequiredDate)
+        public void setRequiredDate(DateTime requiredDate)
         {
-            OrderRuleCheck.CheckRequiredDate(RequiredDate);
+            OrderRuleCheck.CheckRequiredDate(requiredDate);
+            RequiredDate = requiredDate;
         }
 
         public void SetId(Guid orderId)

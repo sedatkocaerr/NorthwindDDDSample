@@ -90,9 +90,9 @@ namespace NorthwindApi.Application.AppServices
             orderCheck.AddOrderDetail(orderDetail);
             _orderRepository.Update(orderCheck);
 
-            using (var data = await _orderRepository.UnitOfWork.BeginTransactionAsync())
+            using (var transaction = await _orderRepository.UnitOfWork.BeginTransactionAsync())
             {
-                if (!await _orderRepository.UnitOfWork.Commit())
+                if (!await _orderRepository.UnitOfWork.Commit(transaction))
                 {
                     validationResult.Errors.Add(new ValidationFailure("", "An error occurred while saving data"));
                     return validationResult;

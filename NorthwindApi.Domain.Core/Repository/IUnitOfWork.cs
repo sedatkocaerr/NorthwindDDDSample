@@ -8,6 +8,7 @@ namespace NorthwindApi.Domain.Core.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
+        Task<bool> Commit(IDbContextTransaction transaction);
         Task<bool> Commit();
         bool HasActiveTransaction();
         IDbContextTransaction GetCurrentTransaction();

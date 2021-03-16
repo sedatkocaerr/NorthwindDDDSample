@@ -13,6 +13,7 @@ using System;
 using NorthwindApi.Domain.Core.Command;
 using NorthwindApi.Application.ElasticSearhServices.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace NorthwindApi.IntegrationTests
 {
@@ -28,7 +29,7 @@ namespace NorthwindApi.IntegrationTests
                     builder.ConfigureServices(services =>
                     {
                         services.RemoveAll(typeof(EfDataContext));
-                        services.AddDbContext<EfDataContext>(options => { options.UseInMemoryDatabase("TestDb"); });
+                        services.AddDbContext<EfDataContext>(options => { options.UseInMemoryDatabase("TestDb").ConfigureWarnings(x=>x.Ignore(InMemoryEventId.TransactionIgnoredWarning)); });
                     });
                     builder.UseEnvironment("test");
                 });

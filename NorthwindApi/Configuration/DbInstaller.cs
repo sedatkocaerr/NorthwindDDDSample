@@ -3,6 +3,7 @@ using NorthwindApi.Data.Ef;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace NorthwindApi.NorthwindApi
 {
@@ -15,7 +16,7 @@ namespace NorthwindApi.NorthwindApi
 
             if(testdb)
             {
-                services.AddDbContext<EfDataContext>(options => options.UseInMemoryDatabase("test"));
+                services.AddDbContext<EfDataContext>(options => options.UseInMemoryDatabase("test").ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
             }
             else
             {
