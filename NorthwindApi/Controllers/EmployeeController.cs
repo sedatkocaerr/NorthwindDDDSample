@@ -69,7 +69,11 @@ namespace NorthwindApi.Controllers
         public async Task<IActionResult> Remove(Guid Id)
         {
             var data = await _employeeAppService.Remove(Id);
-            return Ok(data);
+            if (data.ValidationResult.IsValid)
+            {
+                return Ok(data);
+            }
+            return BadRequest(data);
         }
 
     }

@@ -126,6 +126,21 @@ namespace NorthwindApi.IntegrationTests
 
         }
 
+        [Test]
+        public async Task Must_Remove_Valid_Employee()
+        {
+            await AuthanticateAccountAsync();
+
+            var employee = await CreateEmployee();
+
+            //Act
+            var httpResponseMessage = _httpTestClient.DeleteAsync("/api/employee/remove?Id=" + employee.Id).Result;
+
+            //Assert
+            httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        }
+
         public async Task<Employee> CreateEmployee()
         {
             var employee = new Employee(

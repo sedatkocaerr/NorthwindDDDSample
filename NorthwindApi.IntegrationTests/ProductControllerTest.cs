@@ -135,6 +135,21 @@ namespace NorthwindApi.IntegrationTests
             httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
+        [Test]
+        public async Task Must_Remove_Valid_Product()
+        {
+            await AuthanticateAccountAsync();
+
+            var product = await CreateProduct();
+
+            //Act
+            var httpResponseMessage = _httpTestClient.DeleteAsync("/api/product/remove?Id=" + product.Id).Result;
+
+            //Assert
+            httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        }
+
         private async Task<Category> CreateCategory()
         {
             var category = new Category(Guid.NewGuid(),"Necklages", "Check out our necklaces selection.");

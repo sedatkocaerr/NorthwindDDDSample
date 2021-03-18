@@ -165,6 +165,21 @@ namespace NorthwindApi.IntegrationTests
 
         }
 
+        [Test]
+        public async Task Must_Remove_Valid_Order()
+        {
+            await AuthanticateAccountAsync();
+
+            var order = await CreateOrder();
+
+            //Act
+            var httpResponseMessage = _httpTestClient.DeleteAsync("/api/order/remove?Id="+order.Id).Result;
+
+            //Assert
+            httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        }
+
 
         private async Task<Order> CreateOrder()
         {
