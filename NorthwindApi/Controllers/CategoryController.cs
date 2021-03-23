@@ -35,7 +35,11 @@ namespace NorthwindApi.Controllers
         public async Task<IActionResult> Add([FromBody] CategoryViewModel categoryViewModel)
         {
             var data = await _categoryAppService.AddCategory(categoryViewModel);
-            return Ok(data);
+            if (data.ValidationResult.IsValid)
+            {
+                return Ok(data);
+            }
+            return BadRequest(data);
         }
 
         [HttpGet]
@@ -52,7 +56,11 @@ namespace NorthwindApi.Controllers
         public async Task<IActionResult> Update([FromBody] CategoryViewModel categoryViewModel)
         {
             var data = await _categoryAppService.UpdateCategory(categoryViewModel);
-            return Ok(data);
+            if (data.ValidationResult.IsValid)
+            {
+                return Ok(data);
+            }
+            return BadRequest(data);
         }
 
         [HttpDelete]
