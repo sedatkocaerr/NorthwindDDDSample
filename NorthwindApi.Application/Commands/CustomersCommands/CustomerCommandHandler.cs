@@ -62,11 +62,14 @@ namespace NorthwindApi.Application.Commands.CustomersCommands
             var customer = new Customer(request.Id, request.CompanyName, request.ContactName, request.ContactTitle,
                request.Email, request.Address, request.City, request.PostalCode, request.Country, request.Phone);
 
-            var customerData = await _customersRepository.GetByEmail(customer.Email);
-            if (customerData != null&& customerData.Id!=request.Id)
+            var customerData = await _customersRepository.FindById(customer.Id);
+            if (customerData != null&& customerData.Email!=request.Email)
             {
-                request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("Email", "E-Mail Alreadt Exist"));
-                return request.CommandResponse;
+                if(await _customersRepository.GetByEmail(request.Email)!=null)
+                {
+                    request.CommandResponse.ValidationResult.Errors.Add(new ValidationFailure("Email", "E-Mail Alreadt Exist"));
+                    return request.CommandResponse;
+                }
             }
 
             // TODO Here will Add to Domain Event....

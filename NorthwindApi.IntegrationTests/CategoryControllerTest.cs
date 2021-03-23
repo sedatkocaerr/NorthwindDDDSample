@@ -42,12 +42,12 @@ namespace NorthwindApi.IntegrationTests
         {
             await AuthanticateAccountAsync();
 
-            var employeeViewModel = new CategoryViewModel()
+            var categoryViewModel = new CategoryViewModel()
             {
                 Name = string.Empty,
                 Description = "Explore classic and modern Tiffany necklaces and pendants, including diamond drop.",
             };
-            var httpResponseMessage = _httpTestClient.PostAsJsonAsync("/api/category/add", employeeViewModel).Result;
+            var httpResponseMessage = _httpTestClient.PostAsJsonAsync("/api/category/add", categoryViewModel).Result;
 
             httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -61,13 +61,13 @@ namespace NorthwindApi.IntegrationTests
 
             var category = await CreateCategory();
 
-            var employeeViewModel = new CategoryViewModel()
+            var categoryViewModel = new CategoryViewModel()
             {
                 Id= category.Id,
                 Name = category.Name,
                 Description = "Change Description for category.",
             };
-            var httpResponseMessage = _httpTestClient.PutAsJsonAsync("/api/category/update", employeeViewModel).Result;
+            var httpResponseMessage = _httpTestClient.PutAsJsonAsync("/api/category/update", categoryViewModel).Result;
 
             httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -80,13 +80,13 @@ namespace NorthwindApi.IntegrationTests
 
             var category = await CreateCategory();
 
-            var employeeViewModel = new CategoryViewModel()
+            var categoryViewModel = new CategoryViewModel()
             {
                 Id = category.Id,
                 Name = string.Empty,
                 Description = "Change Description for category.",
             };
-            var httpResponseMessage = _httpTestClient.PutAsJsonAsync("/api/category/update", employeeViewModel).Result;
+            var httpResponseMessage = _httpTestClient.PutAsJsonAsync("/api/category/update", categoryViewModel).Result;
 
             httpResponseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
